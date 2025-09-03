@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - PlayerAttack
+  - TestEnemy
+  - CameraBlock
+  - PlayerCamPosition
+  - EnemyAttack
+  - Enemy
+  - damageAmount
+  - isGround
+  - EnemyAttackArrow
+  - DeathBackGround
+  - DeathBackground
+  - DevaPlayer
+  - AdamCamPosition
+  - DevaCamPosition
+  - AfterImage
+  - DevaSkill
+  - AdamSkill
+  - AdamUltimateSkill
+  - AngryGodBoss
+  - Ground
+  - SummonerEnemy
+  - Platform
+  - exGround
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - isGround
+  - Water
+  - UI
+  - Player
+  - CampfireLight
+  - ob
+  - PlayerAttack
+  - EnemyDamageAmount
+  - Enemy
+  - AngryGodBoss
+  - EnemyAttack
+  - Platform
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Foreground
+    uniqueID: 341752765
+    locked: 0
+  - name: CameraSortingLayer
+    uniqueID: 4072810769
+    locked: 0
