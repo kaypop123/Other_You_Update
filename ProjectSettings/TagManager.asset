@@ -70,3 +70,12 @@ TagManager:
   - name: CameraSortingLayer
     uniqueID: 4072810769
     locked: 0
+  - name: BackgroundSortingLayer
+    uniqueID: 797845807
+    locked: 0
+  - name: Terrain
+    uniqueID: 1713137271
+    locked: 0
+  - name: E_Player
+    uniqueID: 168991469
+    locked: 0
