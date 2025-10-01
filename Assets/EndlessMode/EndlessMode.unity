@@ -1276,7 +1276,7 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!43 &1324803129
+--- !u!43 &1374539548
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15776,6 +15776,9 @@ GameObject:
   - component: {fileID: 1738362735}
   - component: {fileID: 1738362734}
   - component: {fileID: 1738362733}
+  - component: {fileID: 1738362736}
+  - component: {fileID: 1738362737}
+  - component: {fileID: 1738362738}
   m_Layer: 3
   m_Name: Tilemap
   m_TagString: Untagged
@@ -24060,398 +24063,22 @@ CompositeCollider2D:
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:
-  - m_Collider: {fileID: 1738362735}
+  - m_Collider: {fileID: 1738362736}
     m_ColliderPaths:
-    - - X: -38400000
-        Y: -7196990
-      - X: -38400000
-        Y: 403009
-      - X: -51200000
-        Y: 403009
-      - X: -51200000
-        Y: -7596990
-      - X: -48799996
-        Y: -9596990
-      - X: -41200000
-        Y: -9596990
-    - - X: 57600004
-        Y: -5996990
-      - X: 38400000
-        Y: -5996990
-      - X: 38400000
-        Y: -12396990
-      - X: 57600004
-        Y: -12396990
-    - - X: 38399996
-        Y: -5996990
-      - X: 31999998
-        Y: -5996990
-      - X: 31999998
-        Y: -12396990
-      - X: 38399996
-        Y: -12396990
-    - - X: 57600004
-        Y: -13596990
-      - X: 57600004
-        Y: -12396991
-      - X: 38400000
-        Y: -12396991
-      - X: 38400000
-        Y: -15996990
-      - X: 54800000
-        Y: -15996990
-    - - X: 38399996
-        Y: -12396991
-      - X: 31999998
-        Y: -12396991
-      - X: 31999998
-        Y: -13996991
-      - X: 34400000
-        Y: -15996990
-      - X: 38399996
-        Y: -15996990
-    - - X: -211200016
-        Y: -37996992
-      - X: -230399984
-        Y: -37996992
-      - X: -230399984
-        Y: -75196984
-      - X: -211200016
-        Y: -75196984
-    - - X: -230400016
-        Y: -37996992
-      - X: -255999984
-        Y: -37996992
-      - X: -255999984
-        Y: -75196984
-      - X: -236800000
-        Y: -75196984
-      - X: -236800000
-        Y: -75599992
-      - X: -230400016
-        Y: -75599992
-    - - X: -19200000
-        Y: -37996992
-      - X: -31999998
-        Y: -37996992
-      - X: -31999998
-        Y: -75196984
-      - X: -19200000
-        Y: -75196984
-    - - X: -339199968
-        Y: -75599992
-      - X: -320000000
-        Y: -75599992
-      - X: -320000000
-        Y: -75196984
-      - X: -256000000
-        Y: -75196984
-      - X: -256000000
-        Y: -37996992
-      - X: -326400000
-        Y: -37996992
-      - X: -326400000
-        Y: -38400000
-      - X: -345599968
-        Y: -38400000
-      - X: -345599968
-        Y: -76800000
-      - X: -339199968
-        Y: -76800000
-    - - X: 19199998
-        Y: -37996992
-      - X: -19199998
-        Y: -37996992
-      - X: -19199998
-        Y: -75196984
-      - X: 19199998
-        Y: -75196984
-    - - X: -32000000
-        Y: -37996992
-      - X: -83200000
-        Y: -37996992
-      - X: -83200000
-        Y: -75196984
-      - X: -32000000
-        Y: -75196984
-    - - X: -83200008
-        Y: -37996992
-      - X: -95999992
-        Y: -37996992
-      - X: -95999992
-        Y: -75196984
-      - X: -83200008
-        Y: -75196984
-    - - X: -96000000
-        Y: -37996992
-      - X: -102400000
-        Y: -37996992
-      - X: -102400000
-        Y: -75196984
-      - X: -96000000
-        Y: -75196984
-    - - X: -172800000
-        Y: -37996992
-      - X: -191999984
-        Y: -37996992
-      - X: -191999984
-        Y: -75196984
-      - X: -172800000
-        Y: -75196984
-    - - X: -102400008
-        Y: -37996992
-      - X: -115199992
-        Y: -37996992
-      - X: -115199992
-        Y: -75196984
-      - X: -102400008
-        Y: -75196984
-    - - X: -115200008
-        Y: -37996992
-      - X: -127999992
-        Y: -37996992
-      - X: -127999992
-        Y: -75196984
-      - X: -115200008
-        Y: -75196984
-    - - X: -128000000
-        Y: -37996992
-      - X: -172799984
-        Y: -37996992
-      - X: -172799984
-        Y: -75196984
-      - X: -128000000
-        Y: -75196984
-    - - X: -192000000
-        Y: -37996992
-      - X: -211199984
-        Y: -37996992
-      - X: -211199984
-        Y: -75196984
-      - X: -192000000
-        Y: -75196984
-    - - X: 217599984
-        Y: -37996992
-      - X: 198400000
-        Y: -37996992
-      - X: 198400000
-        Y: -75196984
-      - X: 217599984
-        Y: -75196984
-    - - X: 198399984
-        Y: -37996992
-      - X: 179200000
-        Y: -37996992
-      - X: 179200000
-        Y: -75196984
-      - X: 198399984
-        Y: -75196984
-    - - X: 179199984
-        Y: -37996992
-      - X: 160000000
-        Y: -37996992
-      - X: 160000000
-        Y: -75196984
-      - X: 179199984
-        Y: -75196984
-    - - X: 159999984
-        Y: -37996992
-      - X: 153600000
-        Y: -37996992
-      - X: 153600000
-        Y: -75196984
-      - X: 159999984
-        Y: -75196984
-    - - X: 134399984
-        Y: -37996992
-      - X: 121600000
-        Y: -37996992
-      - X: 121600000
-        Y: -75196984
-      - X: 134399984
-        Y: -75196984
-    - - X: 140799984
-        Y: -37996992
-      - X: 134400000
-        Y: -37996992
-      - X: 134400000
-        Y: -75196984
-      - X: 140799984
-        Y: -75196984
-    - - X: 121599992
-        Y: -37996992
-      - X: 108800000
-        Y: -37996992
-      - X: 108800000
-        Y: -75196984
-      - X: 121599992
-        Y: -75196984
-    - - X: 108799992
-        Y: -37996992
-      - X: 102400000
-        Y: -37996992
-      - X: 102400000
-        Y: -75196984
-      - X: 108799992
-        Y: -75196984
-    - - X: 153599984
-        Y: -37996992
-      - X: 140800000
-        Y: -37996992
-      - X: 140800000
-        Y: -75196984
-      - X: 153599984
-        Y: -75196984
-    - - X: 89599992
-        Y: -37996992
-      - X: 38400000
-        Y: -37996992
-      - X: 38400000
-        Y: -75196984
-      - X: 89599992
-        Y: -75196984
-    - - X: 102399992
-        Y: -37996992
-      - X: 89600000
-        Y: -37996992
-      - X: 89600000
-        Y: -75196984
-      - X: 102399992
-        Y: -75196984
-    - - X: 38399996
-        Y: -37996992
-      - X: 19200000
-        Y: -37996992
-      - X: 19200000
-        Y: -75196984
-      - X: 38399996
-        Y: -75196984
-    - - X: 351999968
-        Y: -37996992
-      - X: 320000000
-        Y: -37996992
-      - X: 320000000
-        Y: -75196984
-      - X: 351999968
-        Y: -75196984
-    - - X: 319999968
-        Y: -37996992
-      - X: 300800000
-        Y: -37996992
-      - X: 300800000
-        Y: -75196984
-      - X: 319999968
-        Y: -75196984
-    - - X: 390399968
-        Y: -38400000
-      - X: 377599968
-        Y: -38400000
-      - X: 377599968
-        Y: -37996992
-      - X: 352000000
-        Y: -37996992
-      - X: 352000000
-        Y: -75196984
-      - X: 377599968
-        Y: -75196984
-      - X: 377599968
-        Y: -75599992
-      - X: 383999968
-        Y: -75599992
-      - X: 383999968
-        Y: -76800000
-      - X: 390399968
-        Y: -76800000
-    - - X: 236799984
-        Y: -37996992
-      - X: 217600000
-        Y: -37996992
-      - X: 217600000
-        Y: -75196984
-      - X: 236799984
-        Y: -75196984
-    - - X: 300799968
-        Y: -37996992
-      - X: 281600000
-        Y: -37996992
-      - X: 281600000
-        Y: -75196984
-      - X: 300799968
-        Y: -75196984
-    - - X: 281599968
-        Y: -37996992
-      - X: 262400000
-        Y: -37996992
-      - X: 262400000
-        Y: -75196984
-      - X: 281599968
-        Y: -75196984
-    - - X: 262399984
-        Y: -37996992
-      - X: 236800000
-        Y: -37996992
-      - X: 236800000
-        Y: -75196984
-      - X: 262399984
-        Y: -75196984
-    - - X: 416000000
-        Y: -38400000
-      - X: 390400000
-        Y: -38400000
-      - X: 390400000
-        Y: -76800000
-      - X: 416000000
-        Y: -76800000
-    - - X: -345600000
-        Y: -38400000
-      - X: -383999968
-        Y: -38400000
-      - X: -383999968
-        Y: -76800000
-      - X: -345600000
-        Y: -76800000
-    - - X: -384000000
-        Y: -38400000
-      - X: -396800000
-        Y: -38400000
-      - X: -396800000
-        Y: -76800000
-      - X: -384000000
-        Y: -76800000
+    - - X: 384971072
+        Y: 69552088
+      - X: -340308768
+        Y: 69552088
+      - X: -340308768
+        Y: -39039480
+      - X: 384971072
+        Y: -39039480
   m_CompositePaths:
     m_Paths:
-    - - {x: -4.1200094, y: -0.95969903}
-      - {x: -3.8400002, y: -0.7196869}
-      - {x: -3.8400292, y: 0.040300902}
-      - {x: -5.12, y: 0.0402716}
-      - {x: -5.1199903, y: -0.75970703}
-      - {x: -4.8799906, y: -0.95969903}
-    - - {x: 5.4799905, y: -1.599699}
-      - {x: 5.7600007, y: -1.359687}
-      - {x: 5.759971, y: -0.599699}
-      - {x: 3.1999998, y: -0.5997283}
-      - {x: 3.2000093, y: -1.3997071}
-      - {x: 3.4400094, y: -1.599699}
-    - - {x: -33.920025, y: -7.6800003}
-      - {x: -33.919968, y: -7.5599995}
-      - {x: -32, y: -7.55997}
-      - {x: -31.999971, y: -7.5196986}
-      - {x: -23.68, y: -7.519728}
-      - {x: -23.679972, y: -7.5599995}
-      - {x: -23.040003, y: -7.55997}
-      - {x: -23.039972, y: -7.5196986}
-      - {x: 37.76, y: -7.519728}
-      - {x: 37.760025, y: -7.5599995}
-      - {x: 38.399998, y: -7.560029}
-      - {x: 38.400024, y: -7.6800003}
-      - {x: 41.600002, y: -7.6799703}
-      - {x: 41.59997, y: -3.8400002}
-      - {x: 37.76, y: -3.8399704}
-      - {x: 37.759968, y: -3.7996993}
-      - {x: -32.64, y: -3.7997284}
-      - {x: -32.64003, y: -3.8400002}
-      - {x: -39.68, y: -3.8400292}
-      - {x: -39.67997, y: -7.6800003}
+    - - {x: 38.497078, y: -3.903948}
+      - {x: 38.497078, y: 6.955209}
+      - {x: -34.030876, y: 6.955179}
+      - {x: -34.03085, y: -3.903948}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
@@ -24490,7 +24117,7 @@ TilemapCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1738362729}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -24519,6 +24146,141 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!61 &1738362736
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738362729}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 1
+  m_Offset: {x: 2.233118, y: 1.5256305}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 72.527985, y: 10.859157}
+  m_EdgeRadius: 0
+--- !u!61 &1738362737
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738362729}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -4.479108, y: -0.40847132}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.2952886, y: 0.88831955}
+  m_EdgeRadius: 0
+--- !u!61 &1738362738
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738362729}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 4.48595, y: -1.0565898}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.5660877, y: 0.92547464}
+  m_EdgeRadius: 0
 --- !u!1001 &1908789049
 PrefabInstance:
   m_ObjectHideFlags: 0
