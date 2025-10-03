@@ -194,10 +194,17 @@ public class enemyTest : MonoBehaviour // 적의 피격 및 사망 처리 스크립트
 
         ShowBloodEffect(); // 이펙트 한 번만 출력
 
+        // 점수 1 증가 및 콘솔 출력 ㅎㅈㅎㅈㅎㅈ
+        if (ScoreManager.instance != null)
+        {
+            ScoreManager.instance.AddScore(1); // 점수 1 증가
+            Debug.Log("Score +1 | Total: " + ScoreManager.instance.score); // 콘솔에 표시
+        } //ㅎㅈㅎㅈㅎㅈ
+
         // 경험치 지급 처리
         if (fromAdam && PlayerExperience.Instance != null)
         {
-            PlayerExperience.Instance.GainXP(xpReward); // 아담에게 경험치 지급
+            PlayerExperience.Instance.GainXP(1); // 아담에게 경험치 지급
         }
         else if (fromDeba && DevaExperience.Instance != null)
         {

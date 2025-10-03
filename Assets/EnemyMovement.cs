@@ -241,7 +241,7 @@ public class EnemyMovement : MonoBehaviour // 적의 이동 및 행동을 제어하는 스크�
         RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, 1f, groundLayer); // 지면 감지
         if (hit.collider != null)
         {
-            Debug.Log("지면 감지됨: " + hit.collider.gameObject.name);
+            //Debug.Log("지면 감지됨: " + hit.collider.gameObject.name);
         }
         else
         {

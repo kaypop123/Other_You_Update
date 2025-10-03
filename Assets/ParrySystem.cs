@@ -22,6 +22,15 @@ public class ParrySystem : MonoBehaviour
             {
                 Debug.Log("  패링 성공! 가장 가까운 적이 패링 처리됨");
 
+                //ㅎㅈ
+                if (closestEnemy.TryGetComponent<EnemyStats>(out EnemyStats enemyStats))
+                {
+                    enemyStats.TakeDamage(1);
+                    Debug.Log("TakeDamage 호출 시도"); // 확인용
+                }
+                //ㅎㅈ
+
+
                 // 패링 이펙트 생성 후 이동
                 GameObject parryEffect = InstantiateParryEffect(other.transform.position);
                 CallParryParticle(other.transform.position);
@@ -52,7 +61,19 @@ public class ParrySystem : MonoBehaviour
         enemyTest closestEnemy = null;
         float closestDistance = Mathf.Infinity;
 
-        foreach (enemyTest enemy in enemies)
+
+        // ㅎㅈ
+        if (closestEnemy != null && closestEnemy.gameObject == transform.parent.gameObject)
+        {
+            // 기존 패링 처리 전/후 상관없이 TakeDamage 호출
+            if (closestEnemy.TryGetComponent<EnemyStats>(out EnemyStats enemyStats))
+            {
+                enemyStats.TakeDamage(1); // 1 데미지
+            }
+        }
+        //ㅎㅈ
+
+            foreach (enemyTest enemy in enemies)
         {
             float distance = Vector2.Distance(playerAttack.position, enemy.transform.position);
 
