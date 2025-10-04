@@ -99,6 +99,14 @@ public class HurtDeva : MonoBehaviour
         EnemyMovement enemy = other.GetComponentInParent<EnemyMovement>();
         Arrow arrow = other.GetComponent<Arrow>();
 
+        // ぞじぞじぞじぞじぞじ
+        if (other.CompareTag("FireBall"))
+        {
+            Debug.Log("FireBall拭 願製");
+            Die();
+        }
+        //ぞじぞじぞじぞじ
+
         if (other.CompareTag("EnemyAttack") || other.CompareTag("damageAmount"))
         {
             DebaraMovement movement = GetComponent<DebaraMovement>();

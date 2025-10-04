@@ -27,6 +27,7 @@ TagManager:
   - SummonerEnemy
   - Platform
   - exGround
+  - FireBall
   layers:
   - Default
   - TransparentFX
@@ -75,6 +76,9 @@ TagManager:
     locked: 0
   - name: Terrain
     uniqueID: 1713137271
+    locked: 0
+  - name: Object
+    uniqueID: 3363060335
     locked: 0
   - name: E_Player
     uniqueID: 168991469

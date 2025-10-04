@@ -137,6 +137,14 @@ public class HurtPlayer : MonoBehaviour
         Arrow enemyArrow = other.GetComponent<Arrow>();
         // 가시인지 검사
         Thron thron = other.GetComponent<Thron>();
+        
+        // ㅎㅈㅎㅈㅎㅈ 불에 닿았는지 확인
+        if (other.CompareTag("FireBall"))
+        {
+            Debug.Log("FireBall에 닿음");
+            Die();
+        }
+        // ㅎㅈㅎㅈㅎㅈㅎㅈ
 
         // 공격이 "EnemyAttack" 또는 "damageAmount" 태그를 가진 경우 실행
         if (other.CompareTag("EnemyAttack") || other.CompareTag("damageAmount"))
@@ -221,6 +229,8 @@ public class HurtPlayer : MonoBehaviour
             Die();
         }
     }
+
+  
 
     public void UpdateHealthUI()
     {
