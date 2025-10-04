@@ -7,13 +7,13 @@ public class FireBallSpawner : MonoBehaviour
     [System.Serializable]
     public class SpawnPhase
     {
-        public int triggerScore;            // 몇 점일 때 스폰할지
-        public Transform spawnPoint;        // 스폰 위치
+        public int triggerScore; // 몇 점일 때 스폰할지
+        public Transform spawnPoint;  // 스폰 위치
     }
 
     [Header("FireBall Settings")]
-    public GameObject fireBallPrefab;       // FireBall 프리팹
-    public int maxFireBalls = 2;            // 동시에 존재 가능한 FireBall 수
+    public GameObject fireBallPrefab;  // FireBall 프리팹
+    public int maxFireBalls = 2;  // 동시에 존재 가능한 FireBall 수
 
     [Header("Spawn Phases (Customize Freely)")]
     public List<SpawnPhase> phases = new List<SpawnPhase>();
