@@ -28,6 +28,7 @@ TagManager:
   - Platform
   - exGround
   - FireBall
+  - Terrain
   layers:
   - Default
   - TransparentFX
@@ -44,7 +45,7 @@ TagManager:
   - AngryGodBoss
   - EnemyAttack
   - Platform
-  - 
+  - FireBall
   - 
   - 
   - 
@@ -76,6 +77,12 @@ TagManager:
     locked: 0
   - name: Terrain
     uniqueID: 1713137271
+    locked: 0
+  - name: Skeleton
+    uniqueID: 2352163101
+    locked: 0
+  - name: FireBall
+    uniqueID: 2621640823
     locked: 0
   - name: Object
     uniqueID: 3363060335
