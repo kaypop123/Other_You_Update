@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+
 public class HurtPlayer : MonoBehaviour
 {
     private Animator TestAnime;
@@ -10,28 +11,34 @@ public class HurtPlayer : MonoBehaviour
     public GameObject parringEffects;
     public ParticleSystem bloodEffectParticle;
 
-
     public CameraShakeSystem cameraShake;
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
+
     public int CurrentHealth => PlayerStats.Instance != null ? PlayerStats.Instance.currentHealth : 0;
     public int MaxHealth => PlayerStats.Instance != null ? PlayerStats.Instance.maxHealth : 100;
-
 
     public float knockbackForce = 5f;
     private bool isParrying = false;
 
     [Header("Hit Effect Position")]
-    public Transform pos; //  ¼öµ¿À¸·Î À§Ä¡ Á¶Á¤ °¡´ÉÇÑ ÇÇ°İ ÀÌÆåÆ® À§Ä¡
+    public Transform pos; // í”¼ê²© íš¨ê³¼ ìœ„ì¹˜ ê¸°ì¤€
 
-    public HealthBarUI healthBarUI; //  UI Ã¼·Â¹Ù ÂüÁ¶ Ãß°¡
+    public HealthBarUI healthBarUI;
     public CharStateGUIEffect charStateGUIEffect;
-    private bool isDead = false; //  »ç¸Á ¿©ºÎ È®ÀÎ
+    private bool isDead = false;
 
     [Header("Death Effect Elements")]
-    public SpriteRenderer deathBackground; //  ¹è°æÀ» ¾îµÓ°Ô ÇÒ ¿ÀºêÁ§Æ® (SpriteRenderer)
-    public static HurtPlayer Instance; // ½Ì±ÛÅæ ÀÎ½ºÅÏ½º Ãß°¡
-    private int originalSortingOrder; // Ã³À½ ·¹ÀÌ¾î ÀúÀå
+    public SpriteRenderer deathBackground; // ì‚¬ë§ ì‹œ ë°°ê²½ ì–´ë‘¡ê²Œ ì²˜ë¦¬
+    public static HurtPlayer Instance;
+    private int originalSortingOrder;
+
+    void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+    }
+
     void Start()
     {
         TestAnime = GetComponent<Animator>();
@@ -40,67 +47,49 @@ public class HurtPlayer : MonoBehaviour
         cameraShake = Camera.main != null ? Camera.main.GetComponent<CameraShakeSystem>() : null;
 
         if (cameraShake == null)
-        {
-            Debug.LogWarning("Ä«¸Ş¶ó¿¡¼­ CameraShakeSystem ½ºÅ©¸³Æ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
-        }
-
-
+            Debug.LogWarning("CameraShakeSystemì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 
         if (healthBarUI != null)
-        {
             healthBarUI.Initialize(MaxHealth);
-        }
-        //  °ËÀº ¹è°æÀÇ Åõ¸íµµ¸¦ 0À¸·Î ÃÊ±âÈ­ (¿ÏÀü Åõ¸í)
+
+        // ë°°ê²½ ì´ˆê¸°í™”
         if (deathBackground != null)
         {
             Color startColor = deathBackground.color;
             startColor.a = 0f;
             deathBackground.color = startColor;
         }
+
         FindCameraShake();
-        FindDeathBackground(); //  ¾À ½ÃÀÛ ½Ã deathBackground Ã£±â
+        FindDeathBackground();
+
         originalSortingOrder = spriteRenderer != null ? spriteRenderer.sortingOrder : 0;
     }
 
     void Update()
     {
         if (cameraShake == null)
-        {
-            FindCameraShake(); //  ¾ÀÀÌ ¹Ù²î¾úÀ» °æ¿ì ´Ù½Ã Ã£À½
-        }
+            FindCameraShake();
+
         if (deathBackground == null)
-        {
-            FindDeathBackground(); //  ¾À º¯°æ ½Ã ´Ù½Ã deathBackground Ã£±â
-        }
+            FindDeathBackground();
     }
+
     void FindDeathBackground()
     {
         GameObject backgroundObj = GameObject.Find("DeathBackground");
         if (backgroundObj != null)
-        {
             deathBackground = backgroundObj.GetComponent<SpriteRenderer>();
-        }
         else
-        {
-            Debug.LogWarning("DeathBackground¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù! ¾À ÀüÈ¯ ½Ã È®ÀÎÇÏ¼¼¿ä.");
-        }
+            Debug.LogWarning("DeathBackground ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
     }
-    //  Ä«¸Ş¶ó ¼ÎÀÌÅ© ½Ã½ºÅÛÀ» ´Ù½Ã Ã£´Â ÇÔ¼ö Ãß°¡
+
     void FindCameraShake()
     {
         cameraShake = Camera.main != null ? Camera.main.GetComponent<CameraShakeSystem>() : null;
 
         if (cameraShake == null)
-        {
-            Debug.LogWarning("Ä«¸Ş¶ó¿¡¼­ CameraShakeSystem ½ºÅ©¸³Æ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù! ¾À ÀüÈ¯ ½Ã È®ÀÎÇÏ¼¼¿ä.");
-        }
-    }
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
+            Debug.LogWarning("CameraShakeSystemì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
     }
 
     public void ShowBloodEffect()
@@ -110,7 +99,6 @@ public class HurtPlayer : MonoBehaviour
             int randomIndex = Random.Range(0, bloodEffectPrefabs.Length);
             GameObject selectedEffect = bloodEffectPrefabs[randomIndex];
 
-            //  pos À§Ä¡¿¡¼­ ÀÌÆåÆ® »ı¼º
             GameObject bloodEffect = Instantiate(selectedEffect, pos.position, Quaternion.identity);
             Destroy(bloodEffect, 0.3f);
 
@@ -123,87 +111,57 @@ public class HurtPlayer : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("bloodEffectPrefabs ¹è¿­ÀÌ ºñ¾î ÀÖ½À´Ï´Ù!");
+            Debug.LogWarning("bloodEffectPrefabs ë°°ì—´ì´ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤!");
         }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (isParrying || isDead) return; // ÆĞ¸µ »óÅÂ°Å³ª »ç¸ÁÇßÀ¸¸é ¹«½Ã
+        if (isParrying || isDead) return;
 
-        // ±Ù°Å¸® Àû °ø°İÀÎÁö °Ë»ç
         EnemyMovement enemy = other.GetComponentInParent<EnemyMovement>();
-        // ¿ø°Å¸® °ø°İ(È­»ì)ÀÎÁö °Ë»ç
         Arrow enemyArrow = other.GetComponent<Arrow>();
-        // °¡½ÃÀÎÁö °Ë»ç
         Thron thron = other.GetComponent<Thron>();
-        
-        // ¤¾¤¸¤¾¤¸¤¾¤¸ ºÒ¿¡ ´ê¾Ò´ÂÁö È®ÀÎ
+
         if (other.CompareTag("FireBall"))
         {
-            Debug.Log("FireBall¿¡ ´êÀ½");
+            Debug.Log("FireBallì— í”¼ê²©ë¨");
             Die();
         }
-        // ¤¾¤¸¤¾¤¸¤¾¤¸¤¾¤¸
 
-        // °ø°İÀÌ "EnemyAttack" ¶Ç´Â "damageAmount" ÅÂ±×¸¦ °¡Áø °æ¿ì ½ÇÇà
         if (other.CompareTag("EnemyAttack") || other.CompareTag("damageAmount"))
         {
-            // ÇÃ·¹ÀÌ¾î°¡ ¹«Àû »óÅÂÀÎÁö È®ÀÎ
             AdamMovement playerMovement = GetComponent<AdamMovement>();
             AdamUltimateSkill ultimateSkill = GetComponent<AdamUltimateSkill>();
 
             if ((playerMovement != null && playerMovement.isInvincible) ||
                 (ultimateSkill != null && ultimateSkill.isCasting))
             {
-                Debug.Log("¹«Àû »óÅÂ! ´ë¹ÌÁö ¾øÀ½");
-                return; // ´ë¹ÌÁö Ã³¸® ¾È ÇÔ
+                Debug.Log("ë¬´ì  ìƒíƒœ - í”¼í•´ ë¬´íš¨í™”");
+                return;
             }
-            // 0.5ÃÊ µ¿¾È Ãß°¡ ´ë¹ÌÁö¸¦ ¹ŞÁö ¾Êµµ·Ï ¼³Á¤ (¿¬¼Ó °ø°İ ¹æÁö)
+
             EnemyDamageBumpAgainst damageTrigger = other.GetComponent<EnemyDamageBumpAgainst>();
             if (damageTrigger != null)
-            {
                 damageTrigger.TriggerDamageCooldown(0.5f);
-            }
 
-            //  ±Ù°Å¸® Àû °ø°İÀÎÁö È®ÀÎ ÈÄ ´ë¹ÌÁö Àû¿ë
             int damage = 0;
             if (enemy != null)
-            {
-                damage = enemy.GetDamage(); // ÀûÀÌ ÁÖ´Â ´ë¹ÌÁö¸¦ °¡Á®¿È
-            }
-            //  ¿ø°Å¸® °ø°İ(È­»ì)ÀÎÁö È®ÀÎ ÈÄ ´ë¹ÌÁö Àû¿ë
+                damage = enemy.GetDamage();
             else if (enemyArrow != null)
-            {
-                damage = enemyArrow.damage; // È­»ìÀÌ °¡Áø ´ë¹ÌÁö Àû¿ë
-            }
-            //  °¡½ÃÀÎÁö È®ÀÎ ÈÄ ´ë¹ÌÁö Àû¿ë
+                damage = enemyArrow.damage;
             else if (thron != null)
-            {
-                damage = thron.damage; // °¡½Ã ´ë¹ÌÁö Àû¿ë
-                Debug.Log("°¡½Ã");
-            }
+                damage = thron.damage;
 
-            // ´ë¹ÌÁö Àû¿ë (ÇÇ°İ Ã³¸®)
             TakeDamage(damage);
-
-            //  ÇÇ°İ ¾Ö´Ï¸ŞÀÌ¼Ç Áï½Ã ½ÇÇà
             TestAnime.Play("Hurt", 0, 0f);
-
-            // ÇÇ°İ ÀÌÆåÆ® ½ÇÇà
             ShowBloodEffect();
-
-            //  ³Ë¹é(Ãæ°İ) È¿°ú ½ÇÇà
             Knockback(other.transform);
 
-            //  Ä«¸Ş¶ó Èçµé¸² (Ä«¸Ş¶ó ¼ÎÀÌÅ©)
             if (cameraShake != null)
-            {
-                StartCoroutine(cameraShake.Shake(0.15f, 0.15f)); // 0.15ÃÊ µ¿¾È È­¸é Èçµé¸²
-            }
+                StartCoroutine(cameraShake.Shake(0.15f, 0.15f));
         }
     }
-
 
     public void TakeDamage(int damage)
     {
@@ -212,40 +170,30 @@ public class HurtPlayer : MonoBehaviour
         PlayerStats.Instance.currentHealth -= damage;
         PlayerStats.Instance.currentHealth = Mathf.Clamp(PlayerStats.Instance.currentHealth, 0, PlayerStats.Instance.maxHealth);
 
-        Debug.Log($"[HurtPlayer] Ã¼·Â °¨¼Ò: {PlayerStats.Instance.currentHealth} / {PlayerStats.Instance.maxHealth}");
+        Debug.Log($"[HurtPlayer] ì²´ë ¥: {PlayerStats.Instance.currentHealth} / {PlayerStats.Instance.maxHealth}");
 
         if (healthBarUI != null)
-        {
             healthBarUI.UpdateHealthBar(PlayerStats.Instance.currentHealth, true);
-        }
 
         if (charStateGUIEffect != null)
-        {
             charStateGUIEffect.TriggerHitEffect();
-        }
 
         if (PlayerStats.Instance.currentHealth <= 0)
-        {
             Die();
-        }
     }
-
-  
 
     public void UpdateHealthUI()
     {
         if (healthBarUI != null)
-        {
             healthBarUI.UpdateHealthBar(PlayerStats.Instance.currentHealth, true);
-        }
     }
-
 
     public void CancelDamage()
     {
-        Debug.Log(" ÆĞ¸µ ¼º°ø! ´ë¹ÌÁö ¹«È¿È­");
-        TestAnime.ResetTrigger("Hurt"); // ÇÇ°İ ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà ¹æÁö
+        Debug.Log("íŒ¨ë§ ì¤‘ í”¼í•´ ë¬´íš¨í™”");
+        TestAnime.ResetTrigger("Hurt");
     }
+
     public void StartParry()
     {
         isParrying = true;
@@ -258,53 +206,67 @@ public class HurtPlayer : MonoBehaviour
         isParrying = false;
     }
 
-    private void Knockback(Transform playerTransform)
+    private void Knockback(Transform target)
     {
         if (rb == null) return;
 
-        float direction = transform.position.x - playerTransform.position.x > 0 ? 1f : -1f;
+        float direction = transform.position.x - target.position.x > 0 ? 1f : -1f;
         rb.velocity = new Vector2(knockbackForce * direction, rb.velocity.y + 1f);
     }
 
     private void Die()
+{
+    if (isDead) return;
+    isDead = true;
+
+    Debug.Log($"{gameObject.name} ì‚¬ë§!");
+
+    // ğŸ”¹ ì  ìŠ¤í° ì¤‘ë‹¨
+    foreach (EnemySpawner spawner in FindObjectsOfType<EnemySpawner>())
     {
-        if (isDead) return;
-        isDead = true;
+        spawner.StopSpawning();
+    }
 
-        Debug.Log($"{gameObject.name} Áï½Ã »ç¸Á!");
+    // ğŸ”¹ ì´ë¯¸ ìƒì„±ëœ ì  ë¹„í™œì„±í™”
+    foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+    {
+        enemy.SetActive(false);
+    }
 
-        DisablePlayerControls();
+    // ì•„ë‹´ ì´ë™/ê³µê²©ë§Œ ë¹„í™œì„±í™”
+    AdamMovement movement = GetComponent<AdamMovement>();
+    if (movement != null) movement.enabled = false;
 
-        if (rb != null)
-        {
-            rb.velocity = Vector2.zero;
-            rb.bodyType = RigidbodyType2D.Kinematic;
-            rb.simulated = false;
-            Debug.Log("[HurtPlayer] ¸®Áöµå¹Ùµğ ºñÈ°¼ºÈ­ ¿Ï·á!");
-        }
+    CharacterAttack attack = GetComponent<CharacterAttack>();
+    if (attack != null) attack.enabled = false;
 
-        if (deathBackground != null)
-        {
-            deathBackground.DOFade(1f, 0.5f).OnComplete(() =>
-            {
-                TestAnime.SetTrigger("Die");
-                ChangeLayerOnDeath();
+    if (rb != null)
+    {
+        rb.velocity = Vector2.zero;
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.simulated = false;
+    }
 
-                //  »ç¸Á ÈÄ DeathPanel UI È£Ãâ
-                ShowDeathPanelUI();
-            });
-        }
-        else
+    if (deathBackground != null)
+    {
+        deathBackground.DOFade(1f, 0.5f).OnComplete(() =>
         {
             TestAnime.SetTrigger("Die");
             ChangeLayerOnDeath();
 
-            //  »ç¸Á ÈÄ DeathPanel UI È£Ãâ
+            // UI í‘œì‹œ
             ShowDeathPanelUI();
-        }
-
-        StartCoroutine(DisableAfterDeath());
+        });
     }
+    else
+    {
+        TestAnime.SetTrigger("Die");
+        ChangeLayerOnDeath();
+        ShowDeathPanelUI();
+    }
+}
+
+
 
     private void ShowDeathPanelUI()
     {
@@ -313,34 +275,34 @@ public class HurtPlayer : MonoBehaviour
         if (sceneUIManager != null)
         {
             sceneUIManager.ShowManagedDeathPanel();
-            Debug.Log("[HurtPlayer] DeathPanel È£Ãâ ¿Ï·á!");
+            Debug.Log("[HurtPlayer] DeathPanel í‘œì‹œ ì™„ë£Œ!");
         }
         else
         {
-            Debug.LogError("[HurtPlayer] SceneUIManager°¡ Á¸ÀçÇÏÁö ¾Ê¾Æ DeathPanelÀ» Ç¥½ÃÇÒ ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogError("[HurtPlayer] SceneUIManagerë¥¼ ì°¾ì„ ìˆ˜ ì—†ì–´ DeathPanel í‘œì‹œ ì‹¤íŒ¨.");
         }
     }
 
     private void DisablePlayerControls()
     {
-        //  ÀÌµ¿, Á¡ÇÁ, ´ë½¬, °ø°İ µî ¸ğµç ÀÔ·Â Â÷´Ü
         AdamMovement movement = GetComponent<AdamMovement>();
         if (movement != null) movement.enabled = false;
 
         CharacterAttack attack = GetComponent<CharacterAttack>();
         if (attack != null) attack.enabled = false;
 
-        Debug.Log("¸ğµç ÄÁÆ®·Ñ·¯ ºñÈ°¼ºÈ­µÊ");
+        Debug.Log("í”Œë ˆì´ì–´ ì»¨íŠ¸ë¡¤ ë¹„í™œì„±í™” ì™„ë£Œ");
     }
 
     private void ChangeLayerOnDeath()
     {
         if (spriteRenderer != null)
         {
-            spriteRenderer.sortingOrder = 11; //  Ä³¸¯ÅÍ°¡ ¹è°æ À§·Î ¿Ã¶ó°¡µµ·Ï ¼³Á¤
-            Debug.Log($"[HurtPlayer] Order in Layer º¯°æµÊ: {spriteRenderer.sortingOrder}");
+            spriteRenderer.sortingOrder = 11;
+            Debug.Log($"[HurtPlayer] Order in Layer ë³€ê²½: {spriteRenderer.sortingOrder}");
         }
     }
+
     public void RespawnPlayer()
     {
         if (!isDead) return;
@@ -348,7 +310,6 @@ public class HurtPlayer : MonoBehaviour
         isDead = false;
         gameObject.SetActive(true);
 
-        // Rigidbody ÃÊ±âÈ­
         if (rb != null)
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
@@ -356,13 +317,13 @@ public class HurtPlayer : MonoBehaviour
             rb.velocity = Vector2.zero;
         }
 
-        // Ã¼·Â ÃÊ±âÈ­
         if (PlayerStats.Instance != null)
         {
             PlayerStats.Instance.currentHealth = PlayerStats.Instance.maxHealth;
             PlayerStats.Instance.SetCurrentEnergy(PlayerStats.Instance.maxEnergy);
-            PlayerStats.Instance.SetCurrentMana(PlayerStats.Instance.maxMana); //  ÀÌ°Å ²À ÇÊ¿ä!
+            PlayerStats.Instance.SetCurrentMana(PlayerStats.Instance.maxMana);
         }
+
         if (DevaStats.Instance != null)
         {
             DevaStats.Instance.currentHealth = DevaStats.Instance.maxHealth;
@@ -370,41 +331,32 @@ public class HurtPlayer : MonoBehaviour
             DevaStats.Instance.SetCurrentMana(DevaStats.Instance.maxMana);
 
             if (HurtDeva.Instance != null)
-                HurtDeva.Instance.UpdateHealthUI(); // µ¥¹Ù Ã¼·Â UIµµ °»½Å
+                HurtDeva.Instance.UpdateHealthUI();
         }
-        // UI ÃÊ±âÈ­
+
         UpdateHealthUI();
 
-        // ¾Ö´Ï¸ŞÀÌ¼Ç ÃÊ±âÈ­
         if (TestAnime != null)
         {
             TestAnime.ResetTrigger("Die");
-            TestAnime.Play("Idle"); // Idle·Î µÇµ¹¸®±â
+            TestAnime.Play("Idle");
         }
 
-        // ÄÁÆ®·Ñ·¯ ÀçÈ°¼ºÈ­
         EnablePlayerControls();
 
-        // ·¹ÀÌ¾î ÃÊ±âÈ­
         if (spriteRenderer != null)
-        {
-            spriteRenderer.sortingOrder = 0;
-        }
+            spriteRenderer.sortingOrder = originalSortingOrder;
 
-        // °ËÀº ¹è°æ Åõ¸íÈ­
         if (deathBackground != null)
         {
             Color color = deathBackground.color;
             color.a = 0f;
             deathBackground.color = color;
         }
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.sortingOrder = originalSortingOrder; // ¿ø·¡´ë·Î º¹¿ø
-        }
 
-        Debug.Log("[HurtPlayer] ÇÃ·¹ÀÌ¾î ºÎÈ° ¿Ï·á!");
+        Debug.Log("[HurtPlayer] í”Œë ˆì´ì–´ ë¦¬ìŠ¤í° ì™„ë£Œ!");
     }
+
     private void EnablePlayerControls()
     {
         AdamMovement movement = GetComponent<AdamMovement>();
@@ -413,15 +365,16 @@ public class HurtPlayer : MonoBehaviour
         CharacterAttack attack = GetComponent<CharacterAttack>();
         if (attack != null) attack.enabled = true;
 
-        Debug.Log("¸ğµç ÄÁÆ®·Ñ·¯ ÀçÈ°¼ºÈ­µÊ");
+        Debug.Log("í”Œë ˆì´ì–´ ì»¨íŠ¸ë¡¤ ì¬í™œì„±í™” ì™„ë£Œ");
     }
+
     public bool IsDead()
     {
         return isDead;
     }
+
     private IEnumerator DisableAfterDeath()
     {
         yield return new WaitForSeconds(5f);
-
     }
 }
