@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEditor.Build.Content;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -50,6 +51,21 @@ public class PlayerStats : MonoBehaviour
 
         if (ManaBarUI.Instance != null)
             ManaBarUI.Instance.UpdateManaBar(currentMana);
+    }
+
+    // ㅎㅈㅎㅈ
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "FireBall")
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        currentHealth = 0;
+        Debug.Log("현재 체력 0");
     }
 
     public void Heal(int amount)
