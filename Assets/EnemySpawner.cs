@@ -4,53 +4,23 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject enemyPrefab;      // ìŠ¤í°í•  ì  í”„ë¦¬íŒ¹
-    public float spawnInterval = 2f;    // ìŠ¤í° ê°„ê²©
-    private bool canSpawn = true;       // ìŠ¤í° ê°€ëŠ¥ ì—¬ë¶€
-
-    private Coroutine spawnCoroutine;
+    public GameObject enemyPrefab;   // ½ºÆùÇÒ Àû
+    public Transform leftSpawnPoint;     // ¿ŞÂÊ À§Ä¡
+    public Transform rightSpawnPoint;     // ¿À¸¥ÂÊ À§Ä¡
+    public float spawnInterval = 2f; // ½ºÆù °£°İ
 
     void Start()
     {
-        spawnCoroutine = StartCoroutine(SpawnEnemies());
+        StartCoroutine(SpawnLoop());
     }
 
-    IEnumerator SpawnEnemies()
+    IEnumerator SpawnLoop()
     {
-        while (canSpawn)
+        while (true)
         {
-            SpawnEnemy();
+            Instantiate(enemyPrefab, leftSpawnPoint.position, Quaternion.identity);
+            Instantiate(enemyPrefab, rightSpawnPoint.position, Quaternion.identity);
             yield return new WaitForSeconds(spawnInterval);
-        }
-    }
-
-    void SpawnEnemy()
-    {
-        if (enemyPrefab != null)
-        {
-            Instantiate(enemyPrefab, transform.position, Quaternion.identity);
-        }
-    }
-
-    // ğŸ”¹ ìŠ¤í° ì¤‘ë‹¨ í•¨ìˆ˜
-    public void StopSpawning()
-    {
-        canSpawn = false;
-
-        // ì½”ë£¨í‹´ ì¤‘ë‹¨
-        if (spawnCoroutine != null)
-            StopCoroutine(spawnCoroutine);
-
-        Debug.Log($"[{gameObject.name}] Enemy Spawning Stopped!");
-    }
-
-    // ğŸ”¹ ìŠ¤í° ì¬ê°œ í•¨ìˆ˜ (ì˜µì…˜)
-    public void ResumeSpawning()
-    {
-        if (!canSpawn)
-        {
-            canSpawn = true;
-            spawnCoroutine = StartCoroutine(SpawnEnemies());
         }
     }
 }
