@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemyPrefab;      // 스폰할 적 프리팹
+    public Transform leftSpawnPoint; // 왼쪽 스폰 위치
+    public Transform rightSpawnPoint;// 오른쪽 스폰 위치
     public float spawnInterval = 2f;    // 스폰 간격
     private bool canSpawn = true;       // 스폰 가능 여부
 
@@ -28,7 +30,8 @@ public class EnemySpawner : MonoBehaviour
     {
         if (enemyPrefab != null)
         {
-            Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+            Instantiate(enemyPrefab, leftSpawnPoint.transform.position, Quaternion.identity);
+            Instantiate(enemyPrefab, rightSpawnPoint.transform.position, Quaternion.identity);
         }
     }
 
@@ -54,3 +57,4 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 }
+
