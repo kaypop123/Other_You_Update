@@ -30,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 4632728449449053181}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -31.51, y: -2.96, z: 0}
-  m_LocalScale: {x: 1.1642, y: 1.1825, z: 1}
+  m_LocalPosition: {x: -31.482, y: -2.953, z: 0}
+  m_LocalScale: {x: 1.3494242, y: 1.3706359, z: 1.1591}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7664090723925988429}
@@ -148,7 +148,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   frontCollider: {fileID: 8287595690704755182}
-  terrainCollider: {fileID: 0}
 --- !u!95 &2923381682897595188
 Animator:
   serializedVersion: 5
