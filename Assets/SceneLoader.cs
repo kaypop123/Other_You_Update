@@ -1,32 +1,40 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement; // ì”¬ ì´ë™ìš© ë„¤ì„ìŠ¤í˜ì´ìŠ¤
 
 public class SceneLoader : MonoBehaviour
 {
+    // ë©”ì¸í™”ë©´ìœ¼ë¡œ ëŒì•„ê°€ê¸°
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("startscenes"); // â† ì‹¤ì œ ë©”ì¸í™”ë©´ ì”¬ ì´ë¦„ìœ¼ë¡œ ë°”ê¿”ì¤˜!
+    }
+
+    // ê²Œì„ ì¬ì‹œì‘ (ê¸°ì¡´ ê¸°ëŠ¥ ìœ ì§€)
     public void RebootGame()
     {
 #if UNITY_STANDALONE
         string[] executableEndings = new string[] { "exe", "x86", "x86_64", "app" };
         string executablePath = Application.dataPath + "/../";
 
-        // ºôµåµÈ ½ÇÇà ÆÄÀÏ Ã£±â
+        // ì‹¤í–‰ íŒŒì¼ ì°¾ê¸°
         foreach (string file in System.IO.Directory.GetFiles(executablePath))
         {
             foreach (string ending in executableEndings)
             {
                 if (file.ToLower().EndsWith("." + ending))
                 {
-                    Debug.Log("[Reboot] Àç½ÇÇà ½Ãµµ: " + file);
-                    System.Diagnostics.Process.Start(file); // »õ ÀÎ½ºÅÏ½º ½ÇÇà
-                    Application.Quit(); // ÇöÀç Á¾·á
+                    Debug.Log("[Reboot] ì‹¤í–‰ ì‹œë„: " + file);
+                    System.Diagnostics.Process.Start(file); // ìƒˆ ì¸ìŠ¤í„´ìŠ¤ ì‹¤í–‰
+                    Application.Quit(); // í˜„ì¬ ê²Œì„ ì¢…ë£Œ
                     return;
                 }
             }
         }
 
-        Debug.LogError("[Reboot] ½ÇÇà ÆÄÀÏÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+        Debug.LogError("[Reboot] ì‹¤í–‰ íŒŒì¼ì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 #else
-        Debug.LogWarning("RebootGame()Àº Standalone ºôµå¿¡¼­¸¸ ÀÛµ¿ÇÕ´Ï´Ù.");
+        Debug.LogWarning("RebootGame()ì€ Standalone í™˜ê²½ì—ì„œë§Œ ì‘ë™í•©ë‹ˆë‹¤.");
 #endif
     }
 }
