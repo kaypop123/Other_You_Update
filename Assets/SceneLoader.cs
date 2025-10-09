@@ -7,7 +7,7 @@ public class SceneLoader : MonoBehaviour
     // 메인화면으로 돌아가기
     public void LoadMainMenu()
     {
-        SceneManager.LoadScene("startscenes"); // ← 실제 메인화면 씬 이름으로 바꿔줘!
+        SceneManager.LoadScene("startscenes"); // ← 실제 메인화면 씬 이름
     }
 
     // 게임 재시작 (기존 기능 유지)

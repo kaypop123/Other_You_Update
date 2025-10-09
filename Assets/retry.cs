@@ -5,10 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class retry : MonoBehaviour
 {
-
     public void Retry()
     {
-        Time.timeScale = 1f; // È¤½Ã Á×À» ¶§ ÀÏ½ÃÁ¤Áö ÇßÀ¸¸é ´Ù½Ã Á¤»óÀ¸·Î
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // ÇöÀç ¾À ´Ù½Ã ·Îµå
+        Time.timeScale = 1f;
+
+        // HurtDevaì™€ ê´€ë ¨ ì‹±ê¸€í†¤ ì˜¤ë¸Œì íŠ¸ë¥¼ ì‚­ì œí•˜ì§€ ì•Šê³  ë¹„í™œì„±í™”
+        if (HurtDeva.Instance != null)
+            HurtDeva.Instance.gameObject.SetActive(false);
+
+        if (DevaStats.Instance != null)
+            DevaStats.Instance.gameObject.SetActive(false);
+
+        // ì”¬ ë‹¤ì‹œ ë¡œë“œ
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

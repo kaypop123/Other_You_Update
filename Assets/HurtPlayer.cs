@@ -6,41 +6,48 @@ using DG.Tweening;
 
 public class HurtPlayer : MonoBehaviour
 {
-    private Animator TestAnime;
-    public GameObject[] bloodEffectPrefabs;
-    public GameObject parringEffects;
-    public ParticleSystem bloodEffectParticle;
+    // ------------------- 컴포넌트 참조 -------------------
+    private Animator TestAnime; // 플레이어 애니메이터
+    private Rigidbody2D rb; // Rigidbody2D
+    private SpriteRenderer spriteRenderer; // SpriteRenderer
+    public CameraShakeSystem cameraShake; // 카메라 흔들기
 
-    public CameraShakeSystem cameraShake;
-    private Rigidbody2D rb;
-    private SpriteRenderer spriteRenderer;
-
-    public int CurrentHealth => PlayerStats.Instance != null ? PlayerStats.Instance.currentHealth : 0;
-    public int MaxHealth => PlayerStats.Instance != null ? PlayerStats.Instance.maxHealth : 100;
-
-    public float knockbackForce = 5f;
-    private bool isParrying = false;
-
+    // ------------------- 피격 효과 -------------------
+    public GameObject[] bloodEffectPrefabs; // 피격 시 혈흔 이펙트 배열
+    public ParticleSystem bloodEffectParticle; // 피격 파티클
+    public GameObject parringEffects; // 패링 효과
     [Header("Hit Effect Position")]
     public Transform pos; // 피격 효과 위치 기준
 
-    public HealthBarUI healthBarUI;
-    public CharStateGUIEffect charStateGUIEffect;
-    private bool isDead = false;
+    // ------------------- 플레이어 상태 -------------------
+    public int CurrentHealth => PlayerStats.Instance != null ? PlayerStats.Instance.currentHealth : 0;
+    public int MaxHealth => PlayerStats.Instance != null ? PlayerStats.Instance.maxHealth : 100;
+    public float knockbackForce = 5f; // 넉백 힘
+    private bool isParrying = false; // 패링 상태 여부
+    private bool isDead = false; // 사망 상태 여부
 
+    // ------------------- UI 및 GUI -------------------
+    public HealthBarUI healthBarUI; // 체력바 UI
+    public CharStateGUIEffect charStateGUIEffect; // 상태 GUI 효과
     [Header("Death Effect Elements")]
     public SpriteRenderer deathBackground; // 사망 시 배경 어둡게 처리
-    public static HurtPlayer Instance;
-    private int originalSortingOrder;
+
+    // ------------------- 리스폰 관련 -------------------
+    public static HurtPlayer Instance; // 싱글톤
+    public Transform respawnPoint; // 에디터에서 지정한 리스폰 위치
+    private Vector3 startPosition; // 게임 시작 위치 저장
+    private int originalSortingOrder; // 사망 전 sprite sortingOrder
 
     void Awake()
     {
+        // 싱글톤 초기화
         if (Instance == null)
             Instance = this;
     }
 
     void Start()
     {
+        // 컴포넌트 초기화
         TestAnime = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -50,9 +57,9 @@ public class HurtPlayer : MonoBehaviour
             Debug.LogWarning("CameraShakeSystem을 찾을 수 없습니다.");
 
         if (healthBarUI != null)
-            healthBarUI.Initialize(MaxHealth);
+            healthBarUI.Initialize(MaxHealth); // 체력 UI 초기화
 
-        // 배경 초기화
+        // 사망 배경 초기화 (투명)
         if (deathBackground != null)
         {
             Color startColor = deathBackground.color;
@@ -60,14 +67,20 @@ public class HurtPlayer : MonoBehaviour
             deathBackground.color = startColor;
         }
 
+        // 기타 컴포넌트 참조 연결
         FindCameraShake();
         FindDeathBackground();
 
+        // 원래 SpriteRenderer sortingOrder 저장
         originalSortingOrder = spriteRenderer != null ? spriteRenderer.sortingOrder : 0;
+
+        // 🔹 게임 시작 위치 저장 (리스폰 시 사용)
+        startPosition = transform.position;
     }
 
     void Update()
     {
+        // 참조가 끊어진 경우 다시 찾기
         if (cameraShake == null)
             FindCameraShake();
 
@@ -75,6 +88,7 @@ public class HurtPlayer : MonoBehaviour
             FindDeathBackground();
     }
 
+    // ------------------- 참조 찾기 -------------------
     void FindDeathBackground()
     {
         GameObject backgroundObj = GameObject.Find("DeathBackground");
@@ -87,11 +101,11 @@ public class HurtPlayer : MonoBehaviour
     void FindCameraShake()
     {
         cameraShake = Camera.main != null ? Camera.main.GetComponent<CameraShakeSystem>() : null;
-
         if (cameraShake == null)
             Debug.LogWarning("CameraShakeSystem을 찾을 수 없습니다.");
     }
 
+    // ------------------- 피격 효과 -------------------
     public void ShowBloodEffect()
     {
         if (bloodEffectPrefabs != null && bloodEffectPrefabs.Length > 0)
@@ -115,6 +129,7 @@ public class HurtPlayer : MonoBehaviour
         }
     }
 
+    // ------------------- 충돌 처리 -------------------
     void OnTriggerEnter2D(Collider2D other)
     {
         if (isParrying || isDead) return;
@@ -123,17 +138,20 @@ public class HurtPlayer : MonoBehaviour
         Arrow enemyArrow = other.GetComponent<Arrow>();
         Thron thron = other.GetComponent<Thron>();
 
+        // 즉사 공격 처리
         if (other.CompareTag("FireBall"))
         {
             Debug.Log("FireBall에 피격됨");
             Die();
         }
 
+        // 일반 공격 처리
         if (other.CompareTag("EnemyAttack") || other.CompareTag("damageAmount"))
         {
             AdamMovement playerMovement = GetComponent<AdamMovement>();
             AdamUltimateSkill ultimateSkill = GetComponent<AdamUltimateSkill>();
 
+            // 무적 상태이면 피해 무효화
             if ((playerMovement != null && playerMovement.isInvincible) ||
                 (ultimateSkill != null && ultimateSkill.isCasting))
             {
@@ -153,6 +171,7 @@ public class HurtPlayer : MonoBehaviour
             else if (thron != null)
                 damage = thron.damage;
 
+            // 데미지 적용 및 피격 효과
             TakeDamage(damage);
             TestAnime.Play("Hurt", 0, 0f);
             ShowBloodEffect();
@@ -163,6 +182,7 @@ public class HurtPlayer : MonoBehaviour
         }
     }
 
+    // ------------------- 데미지 처리 -------------------
     public void TakeDamage(int damage)
     {
         if (isDead || PlayerStats.Instance == null) return;
@@ -209,64 +229,54 @@ public class HurtPlayer : MonoBehaviour
     private void Knockback(Transform target)
     {
         if (rb == null) return;
-
         float direction = transform.position.x - target.position.x > 0 ? 1f : -1f;
         rb.velocity = new Vector2(knockbackForce * direction, rb.velocity.y + 1f);
     }
 
+    // ------------------- 사망 처리 -------------------
     private void Die()
-{
-    if (isDead) return;
-    isDead = true;
-
-    Debug.Log($"{gameObject.name} 사망!");
-
-    // 🔹 적 스폰 중단
-    foreach (EnemySpawner spawner in FindObjectsOfType<EnemySpawner>())
     {
-        spawner.StopSpawning();
-    }
+        if (isDead) return;
+        isDead = true;
 
-    // 🔹 이미 생성된 적 비활성화
-    foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
-    {
-        enemy.SetActive(false);
-    }
+        Debug.Log($"{gameObject.name} 사망!");
 
-    // 아담 이동/공격만 비활성화
-    AdamMovement movement = GetComponent<AdamMovement>();
-    if (movement != null) movement.enabled = false;
+        // 🔹 적 스폰 중단
+        foreach (EnemySpawner spawner in FindObjectsOfType<EnemySpawner>())
+            spawner.StopSpawning();
 
-    CharacterAttack attack = GetComponent<CharacterAttack>();
-    if (attack != null) attack.enabled = false;
+        // 🔹 이미 생성된 적 비활성화
+        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+            enemy.SetActive(false);
 
-    if (rb != null)
-    {
-        rb.velocity = Vector2.zero;
-        rb.bodyType = RigidbodyType2D.Kinematic;
-        rb.simulated = false;
-    }
+        // 플레이어 이동/공격 비활성화
+        DisablePlayerControls();
 
-    if (deathBackground != null)
-    {
-        deathBackground.DOFade(1f, 0.5f).OnComplete(() =>
+        // Rigidbody 처리
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            rb.simulated = false;
+        }
+
+        // 사망 배경 처리 후 애니메이션
+        if (deathBackground != null)
+        {
+            deathBackground.DOFade(1f, 0.5f).OnComplete(() =>
+            {
+                TestAnime.SetTrigger("Die");
+                ChangeLayerOnDeath();
+                ShowDeathPanelUI();
+            });
+        }
+        else
         {
             TestAnime.SetTrigger("Die");
             ChangeLayerOnDeath();
-
-            // UI 표시
             ShowDeathPanelUI();
-        });
+        }
     }
-    else
-    {
-        TestAnime.SetTrigger("Die");
-        ChangeLayerOnDeath();
-        ShowDeathPanelUI();
-    }
-}
-
-
 
     private void ShowDeathPanelUI()
     {
@@ -303,6 +313,7 @@ public class HurtPlayer : MonoBehaviour
         }
     }
 
+    // ------------------- 리스폰 처리 -------------------
     public void RespawnPlayer()
     {
         if (!isDead) return;
@@ -310,6 +321,14 @@ public class HurtPlayer : MonoBehaviour
         isDead = false;
         gameObject.SetActive(true);
 
+        // 🔹 리스폰 위치 결정
+        Vector3 respawnPos = respawnPoint != null ? respawnPoint.position : startPosition;
+        transform.position = respawnPos;
+
+        if (respawnPoint == null)
+            Debug.LogWarning("[HurtPlayer] RespawnPoint 미지정, 시작 위치로 리스폰");
+
+        // Rigidbody 초기화
         if (rb != null)
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
@@ -317,6 +336,7 @@ public class HurtPlayer : MonoBehaviour
             rb.velocity = Vector2.zero;
         }
 
+        // 스탯 초기화
         if (PlayerStats.Instance != null)
         {
             PlayerStats.Instance.currentHealth = PlayerStats.Instance.maxHealth;
@@ -336,6 +356,7 @@ public class HurtPlayer : MonoBehaviour
 
         UpdateHealthUI();
 
+        // 애니메이션 초기화
         if (TestAnime != null)
         {
             TestAnime.ResetTrigger("Die");
@@ -347,6 +368,7 @@ public class HurtPlayer : MonoBehaviour
         if (spriteRenderer != null)
             spriteRenderer.sortingOrder = originalSortingOrder;
 
+        // 사망 배경 초기화
         if (deathBackground != null)
         {
             Color color = deathBackground.color;
@@ -368,13 +390,5 @@ public class HurtPlayer : MonoBehaviour
         Debug.Log("플레이어 컨트롤 재활성화 완료");
     }
 
-    public bool IsDead()
-    {
-        return isDead;
-    }
-
-    private IEnumerator DisableAfterDeath()
-    {
-        yield return new WaitForSeconds(5f);
-    }
+    public bool IsDead() => isDead;
 }
