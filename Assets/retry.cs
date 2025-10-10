@@ -9,14 +9,18 @@ public class retry : MonoBehaviour
     {
         Time.timeScale = 1f;
 
-        // HurtDeva와 관련 싱글톤 오브젝트를 삭제하지 않고 비활성화
+        // 싱글톤 오브젝트 완전히 삭제
         if (HurtDeva.Instance != null)
-            HurtDeva.Instance.gameObject.SetActive(false);
+            Destroy(HurtDeva.Instance.gameObject);
 
         if (DevaStats.Instance != null)
-            DevaStats.Instance.gameObject.SetActive(false);
+            Destroy(DevaStats.Instance.gameObject);
 
         // 씬 다시 로드
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+
+
 }
+

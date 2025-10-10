@@ -46,12 +46,23 @@ public class HurtDeva : MonoBehaviour
     public static HurtDeva Instance; // 싱글톤
     private int originalSortingOrder; // SpriteRenderer 기본 Order in Layer 저장
 
-    void Awake()
+    /*void Awake()
     {
         // 싱글톤 초기화
         if (Instance == null)
             Instance = this;
+    }*/
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            gameObject.SetActive(false);
+            // 이전 인스턴스 비활성화
+        }
+        Instance = this; // 새 인스턴스로 교체
     }
+
 
     void Start()
     {
