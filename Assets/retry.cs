@@ -5,22 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class retry : MonoBehaviour
 {
+
     public void Retry()
     {
-        Time.timeScale = 1f;
-
-        // 싱글톤 오브젝트 완전히 삭제
-        if (HurtDeva.Instance != null)
-            Destroy(HurtDeva.Instance.gameObject);
-
-        if (DevaStats.Instance != null)
-            Destroy(DevaStats.Instance.gameObject);
-
-        // 씬 다시 로드
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Time.timeScale = 1f; // 혹시 죽을 때 일시정지 했으면 다시 정상으로
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // 현재 씬 다시 로드
     }
-
-
-
 }
-

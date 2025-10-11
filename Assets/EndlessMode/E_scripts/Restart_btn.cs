@@ -24,12 +24,7 @@ public class RestartButton : MonoBehaviour
         if (HurtPlayer.Instance != null)
             HurtPlayer.Instance.RespawnPlayer();
 
-        // 데바는 상태 초기화 후 화면에서 비활성화
-        if (HurtDeva.Instance != null)
-        {
-            HurtDeva.Instance.ResetState(); // 체력, 상태 초기화
-            HurtDeva.Instance.gameObject.SetActive(false); // 화면에 안 나타나게
-        }
+
 
         Debug.Log("씬 Reload 후 아담만 스폰, 데바 비활성화");
     }
