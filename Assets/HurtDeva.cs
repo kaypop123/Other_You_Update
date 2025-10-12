@@ -2,67 +2,38 @@ using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 
-/// <summary>
-/// 데바 캐릭터 피해 처리 및 사망/리스폰 관리
-/// 데바가 공격받으면 체력 감소, 피격 효과, 넉백 처리
-/// 체력이 0이 되면 사망 처리: 적 스폰 중단, 적 제거, UI 표시, 컨트롤 비활성화
-/// </summary>
 public class HurtDeva : MonoBehaviour
 {
-    // Animator
     private Animator animator;
-
-    // 피격 효과 프리팹
     public GameObject[] bloodEffectPrefabs;
-    public GameObject parringEffects; // 패링 효과
-    public ParticleSystem bloodEffectParticle; // 파티클
+    public GameObject parringEffects;
+    public ParticleSystem bloodEffectParticle;
 
-    // 카메라 흔들림 시스템
     public CameraShakeSystem cameraShake;
-
-    // Rigidbody2D, SpriteRenderer
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
 
-    // 넉백 힘
     public float knockbackForce = 5f;
-
-    // 패링 상태
     private bool isParrying = false;
 
     [Header("Hit Effect Position")]
-    public Transform pos; // 피격 효과 표시 위치
+    public Transform pos;
 
-    // UI
     public DevaHealthBarUI healthBarUI;
     public CharStateGUIEffect charStateGUIEffect;
-
-    // 사망 상태
     private bool isDead = false;
 
     [Header("Death Effect Elements")]
-    public SpriteRenderer deathBackground; // 사망 시 배경 페이드용
+    public SpriteRenderer deathBackground;
 
-    public static HurtDeva Instance; // 싱글톤
-    private int originalSortingOrder; // SpriteRenderer 기본 Order in Layer 저장
-
-    /*void Awake()
-    {
-        // 싱글톤 초기화
-        if (Instance == null)
-            Instance = this;
-    }*/
+    public static HurtDeva Instance;
+    private int originalSortingOrder;
 
     void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            gameObject.SetActive(false);
-            // 이전 인스턴스 비활성화
-        }
-        Instance = this; // 새 인스턴스로 교체
+        if (Instance == null)
+            Instance = this;
     }
-
 
     void Start()
     {
@@ -70,27 +41,24 @@ public class HurtDeva : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalSortingOrder = spriteRenderer != null ? spriteRenderer.sortingOrder : 0;
-
         FindCameraShake();
         FindDeathBackground();
 
-        // 체력 초기화
         DevaStats.Instance.currentHealth = DevaStats.Instance.maxHealth;
         if (healthBarUI != null)
             healthBarUI.Initialize(DevaStats.Instance.maxHealth);
 
-        // 사망 배경 초기 투명 처리
         if (deathBackground != null)
         {
             Color startColor = deathBackground.color;
             startColor.a = 0f;
             deathBackground.color = startColor;
         }
+
     }
 
     void Update()
     {
-        // 카메라 흔들기와 사망 배경이 없으면 계속 찾아줌
         if (cameraShake == null) FindCameraShake();
         if (deathBackground == null) FindDeathBackground();
     }
@@ -131,12 +99,6 @@ public class HurtDeva : MonoBehaviour
         EnemyMovement enemy = other.GetComponentInParent<EnemyMovement>();
         Arrow arrow = other.GetComponent<Arrow>();
 
-        if (other.CompareTag("FireBall"))
-        {
-            Debug.Log("FireBall 충돌");
-            Die();
-        }
-
         if (other.CompareTag("EnemyAttack") || other.CompareTag("damageAmount"))
         {
             DebaraMovement movement = GetComponent<DebaraMovement>();
@@ -156,6 +118,11 @@ public class HurtDeva : MonoBehaviour
 
             if (cameraShake != null)
                 StartCoroutine(cameraShake.Shake(0.15f, 0.15f));
+        }
+        if (other.CompareTag("FireBall"))
+        {
+            Debug.Log("파이어볼이 닿았습니다.");
+            Die();
         }
     }
 
@@ -224,18 +191,14 @@ public class HurtDeva : MonoBehaviour
             rb.simulated = false;
         }
 
-        foreach (EnemySpawner spawner in FindObjectsOfType<EnemySpawner>())
-            spawner.StopSpawning();
-
-        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
-            enemy.SetActive(false);
-
         if (deathBackground != null)
         {
             deathBackground.DOFade(1f, 0.5f).OnComplete(() =>
             {
                 animator.SetTrigger("Die");
                 ChangeLayerOnDeath();
+
+                //  UI 표시 추가
                 ShowDeathPanelUI();
             });
         }
@@ -243,91 +206,89 @@ public class HurtDeva : MonoBehaviour
         {
             animator.SetTrigger("Die");
             ChangeLayerOnDeath();
+
+            //  UI 표시 추가
             ShowDeathPanelUI();
         }
-    }
 
+
+    }
     public void RespawnDeva()
-{
-    // 게임 오브젝트 활성화 먼저
-    gameObject.SetActive(true);
-
-    // 컴포넌트 다시 가져오기 (씬 재로드 후 null일 수 있음)
-    if (animator == null)
-        animator = GetComponent<Animator>();
-    if (rb == null)
-        rb = GetComponent<Rigidbody2D>();
-    if (spriteRenderer == null)
-        spriteRenderer = GetComponent<SpriteRenderer>();
-
-    // 사망 상태 해제
-    isDead = false;
-
-    // 애니메이터 초기화
-    if (animator != null)
     {
-        animator.ResetTrigger("Die");
-        animator.Play("DevaIdle");
+        if (!isDead) return;
+
+        isDead = false;
+        gameObject.SetActive(true);
+        if (animator != null)
+        {
+            animator.ResetTrigger("Die"); // 죽음 트리거 리셋
+            animator.Play("DevaIdle");        // 기본 상태로 복귀
+        }
+        // Rigidbody 초기화
+        if (rb != null)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.simulated = true;
+            rb.velocity = Vector2.zero;
+        }
+
+        // 체력 초기화
+        if (DevaStats.Instance != null)
+        {
+            DevaStats.Instance.currentHealth = DevaStats.Instance.maxHealth;
+            DevaStats.Instance.SetCurrentEnergy(DevaStats.Instance.maxEnergy);
+            DevaStats.Instance.SetCurrentMana(DevaStats.Instance.maxMana);
+        }
+        if (PlayerStats.Instance != null)
+        {
+            PlayerStats.Instance.currentHealth = PlayerStats.Instance.maxHealth;
+            PlayerStats.Instance.SetCurrentEnergy(PlayerStats.Instance.maxEnergy);
+            PlayerStats.Instance.SetCurrentMana(PlayerStats.Instance.maxMana);
+            if (HurtPlayer.Instance != null)
+                HurtPlayer.Instance.UpdateHealthUI();
+        }
+
+        // UI 초기화
+        UpdateHealthUI();
+
+        // 애니메이션 초기화
+        if (animator != null)
+        {
+            animator.ResetTrigger("Die");
+            animator.Play("Idle");
+        }
+
+        // 컨트롤러 재활성화
+        DebaraMovement movement = GetComponent<DebaraMovement>();
+        if (movement != null) movement.enabled = true;
+
+        MagicAttack magic = GetComponent<MagicAttack>();
+        if (magic != null) magic.enabled = true;
+
+        // 레이어 초기화
+        if (spriteRenderer != null)
+            spriteRenderer.sortingOrder = 0;
+
+        // 검은 배경 투명화
+        if (deathBackground != null)
+        {
+            Color color = deathBackground.color;
+            color.a = 0f;
+            deathBackground.color = color;
+        }
+
+        // 리스폰 위치 이동
+        if (SpawnManager.Instance != null)
+        {
+            transform.position = SpawnManager.Instance.spawnPosition;
+        }
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.sortingOrder = originalSortingOrder; //  복원
+        }
+
+        Debug.Log("[HurtDeva] 데바 부활 완료!");
     }
-
-    // Rigidbody 초기화
-    if (rb != null)
-    {
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        rb.simulated = true;
-        rb.velocity = Vector2.zero;
-    }
-
-    // 체력/에너지/마나 초기화
-    if (DevaStats.Instance != null)
-    {
-        DevaStats.Instance.currentHealth = DevaStats.Instance.maxHealth;
-        DevaStats.Instance.SetCurrentEnergy(DevaStats.Instance.maxEnergy);
-        DevaStats.Instance.SetCurrentMana(DevaStats.Instance.maxMana);
-    }
-
-    if (PlayerStats.Instance != null)
-    {
-        PlayerStats.Instance.currentHealth = PlayerStats.Instance.maxHealth;
-        PlayerStats.Instance.SetCurrentEnergy(PlayerStats.Instance.maxEnergy);
-        PlayerStats.Instance.SetCurrentMana(PlayerStats.Instance.maxMana);
-
-        if (HurtPlayer.Instance != null)
-            HurtPlayer.Instance.UpdateHealthUI();
-    }
-
-    // UI 갱신
-    UpdateHealthUI();
-
-    // 컨트롤 활성화
-    DebaraMovement movement = GetComponent<DebaraMovement>();
-    if (movement != null)
-        movement.enabled = true;
-
-    MagicAttack magic = GetComponent<MagicAttack>();
-    if (magic != null)
-        magic.enabled = true;
-
-    // SpriteRenderer 초기화
-    if (spriteRenderer != null)
-        spriteRenderer.sortingOrder = originalSortingOrder;
-
-    // 사망 배경 초기화
-    if (deathBackground != null)
-    {
-        Color color = deathBackground.color;
-        color.a = 0f;
-        deathBackground.color = color;
-    }
-
-    // 스폰 위치로 이동 (없으면 기본 위치)
-    if (SpawnManager.Instance != null)
-        transform.position = SpawnManager.Instance.spawnPosition;
-    else
-        transform.position = Vector3.zero;
-
-    Debug.Log("[HurtDeva] 리스폰 완료!");
-}
 
 
     private void DisableControls()
@@ -350,81 +311,28 @@ public class HurtDeva : MonoBehaviour
             spriteRenderer.sortingOrder = 11;
     }
 
+    private IEnumerator DisableAfterDeath()
+    {
+        yield return new WaitForSeconds(5f);
+        gameObject.SetActive(false);
+    }
+    
     public bool IsDead()
     {
         return isDead;
     }
-
     private void ShowDeathPanelUI()
     {
         SceneUIManager sceneUIManager = FindObjectOfType<SceneUIManager>();
+
         if (sceneUIManager != null)
         {
             sceneUIManager.ShowManagedDeathPanel();
-            Debug.Log("[HurtDeva] DeathPanel 표시 완료!");
+            Debug.Log("[HurtDeva] DeathPanel 호출 완료!");
         }
         else
         {
-            Debug.LogError("[HurtDeva] SceneUIManager를 찾지 못해 DeathPanel 표시 실패!");
+            Debug.LogError("[HurtDeva] SceneUIManager가 존재하지 않아 DeathPanel을 표시할 수 없습니다.");
         }
     }
-
-    /// <summary>
-    /// 강제로 리스폰 (화면에 표시)
-    /// </summary>
-    public void ForceRespawn()
-    {
-        isDead = true;
-        RespawnDeva();
-    }
-
-    /// <summary>
-    /// 화면 안 나오게 상태만 초기화
-    /// 씬 리스타트 시 사용
-    /// </summary>
-    public void ResetState()
-    {
-        isDead = false;
-
-        if (rb != null)
-        {
-            rb.velocity = Vector2.zero;
-            rb.bodyType = RigidbodyType2D.Dynamic;
-            rb.simulated = true;
-        }
-
-        if (DevaStats.Instance != null)
-        {
-            DevaStats.Instance.currentHealth = DevaStats.Instance.maxHealth;
-            DevaStats.Instance.SetCurrentEnergy(DevaStats.Instance.maxEnergy);
-            DevaStats.Instance.SetCurrentMana(DevaStats.Instance.maxMana);
-        }
-
-        UpdateHealthUI();
-
-        if (deathBackground != null)
-        {
-            Color color = deathBackground.color;
-            color.a = 0f;
-            deathBackground.color = color;
-        }
-
-        if (animator != null)
-        {
-            animator.ResetTrigger("Die");
-            animator.Play("DevaIdle");
-        }
-
-        DebaraMovement movement = GetComponent<DebaraMovement>();
-        if (movement != null) movement.enabled = false;
-
-        MagicAttack magic = GetComponent<MagicAttack>();
-        if (magic != null) magic.enabled = false;
-
-        gameObject.SetActive(false);
-
-        Debug.Log("[HurtDeva] 상태 초기화 완료, 화면 비활성화");
-    }
-
-    
 }

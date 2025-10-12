@@ -29,6 +29,7 @@ TagManager:
   - exGround
   - FireBall
   - Terrain
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX
