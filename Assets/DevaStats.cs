@@ -222,4 +222,22 @@ public class DevaStats : MonoBehaviour
         }
     }
 
+
+    // ㅎㅈㅎㅈ 데바 파이어볼
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("FireBall"))
+        {
+            // 체력 0으로 만들기
+            currentHealth = 0;
+
+            // UI 갱신
+            if (DevaHealthBarUI.Instance != null)
+                DevaHealthBarUI.Instance.UpdateHealthBar(currentHealth);
+
+            Debug.Log("[Deva] FireBall에 맞아 체력 0 처리 완료");
+        }
+    }
+
+
 }

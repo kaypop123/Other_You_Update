@@ -53,14 +53,27 @@ public class PlayerStats : MonoBehaviour
             ManaBarUI.Instance.UpdateManaBar(currentMana);
     }
 
-    // ㅎㅈㅎㅈ
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    // ㅎㅈㅎㅈ 파이어볼 닿았을 때 체력 변경
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.gameObject.tag == "FireBall")
+        if (other.CompareTag("FireBall"))
         {
-            Die();
+            // 체력을 0으로 세팅
+            currentHealth = 0;
+
+            // UI 갱신
+            if (HurtPlayer.Instance != null)
+                HurtPlayer.Instance.UpdateHealthUI();
+
+            // HurtPlayer의 TakeDamage로 Die() 호출
+            if (HurtPlayer.Instance != null)
+                HurtPlayer.Instance.TakeDamage(0);
+
+            Debug.Log("FireBall에 맞아 체력 0 처리 완료");
         }
     }
+
 
     void Die()
     {
