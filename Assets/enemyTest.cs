@@ -8,6 +8,8 @@ public class enemyTest : MonoBehaviour // 적의 피격 및 사망 처리 스크립트
     private Rigidbody2D rb; // 리지드바디 참조
     private Collider2D col; // 콜라이더 참조
 
+    public EnemySpawner mySpawner; // 현지 추가 (해당 영역 들어오면 스폰 시작)
+
     // 이펙트 프리팹
     public GameObject[] bloodEffectPrefabs; // 피격 시 생성할 혈흔 이펙트 프리팹 배열
     public GameObject parringEffects; // 패링 시 사용할 이펙트
@@ -226,6 +228,14 @@ public class enemyTest : MonoBehaviour // 적의 피격 및 사망 처리 스크립트
         TestAnime.SetTrigger("Die");
 
         yield return new WaitForSeconds(0.6f); // 애니메이션 재생 시간 대기
+
+        // ㅎㅈㅎㅈㅎㅈㅎㅈ
+        if (mySpawner != null)
+        {
+            mySpawner.OnEnemyDied();
+        }
+        // ㅎㅈㅎㅈㅎㅈㅎㅈ
+
         Destroy(gameObject); // 적 오브젝트 파괴
     }
 }
