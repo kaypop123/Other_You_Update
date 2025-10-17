@@ -4,12 +4,90 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject enemyPrefab;      // 스폰할 적 프리팹
-    public Transform leftSpawnPoint; // 왼쪽 스폰 위치
-    public Transform rightSpawnPoint;// 오른쪽 스폰 위치
-    public float spawnInterval = 2f;    // 스폰 간격
-    private bool canSpawn = true;       // 스폰 가능 여부
+    [Header("Spawn Settings")]
+    public GameObject enemyPrefab;       // 소환할 적 프리팹
+    public Transform spawnPoint;         // 스폰 위치
+    public int maxSpawnCount = 5;        // 최대 스폰 수 (인스펙터에서 설정)
+    public float spawnInterval = 2f;     // 스폰 간격
 
+    [Header("Portal Settings")]
+    public GameObject portalPrefab;      // 모든 적 처치 후 생성될 포탈
+    public Transform portalSpawnPoint;   // 포탈 생성 위치
+
+    private int currentSpawned = 0;      // 현재 스폰된 적 수
+    private int deadCount = 0;           // 사망한 적 수
+    private bool spawning = false;       // 스폰 진행 여부
+
+    private Coroutine spawnRoutine;
+
+    // 외부에서 트리거가 불리면 스폰 시작
+    public void StartSpawning()
+    {
+        if (spawning) return;
+        spawning = true;
+        spawnRoutine = StartCoroutine(SpawnEnemies());
+    }
+
+    IEnumerator SpawnEnemies()
+    {
+        while (currentSpawned < maxSpawnCount)
+        {
+            SpawnEnemy();
+            yield return new WaitForSeconds(spawnInterval);
+        }
+    }
+
+    void SpawnEnemy()
+    {
+        if (enemyPrefab == null || spawnPoint == null) return;
+
+        GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+        currentSpawned++;
+
+        // enemyTest에서 이 스포너로 접근할 수 있게 등록
+        enemyTest enemyScript = enemy.GetComponent<enemyTest>();
+        if (enemyScript != null)
+        {
+            enemyScript.mySpawner = this;
+        }
+    }
+
+    // enemyTest에서 호출됨 (적 사망 시)
+    public void OnEnemyDied()
+    {
+        deadCount++;
+
+        if (deadCount >= maxSpawnCount)
+        {
+            Debug.Log($"모든 적 처치 완료! ({deadCount}/{maxSpawnCount})");
+            StopAllCoroutines();
+            spawning = false;
+            SpawnPortal();
+        }
+    }
+
+    void SpawnPortal()
+    {
+        if (portalPrefab != null && portalSpawnPoint != null)
+        {
+            Instantiate(portalPrefab, portalSpawnPoint.position, Quaternion.identity);
+            Debug.Log("포탈 생성 완료!");
+        }
+    }
+}
+
+
+
+/*using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EnemySpawner : MonoBehaviour
+{
+    public GameObject enemyPrefab;
+    public Transform SpawnPoint;
+    public float spawnInterval = 2f;
+    private bool canSpawn = true;
     private Coroutine spawnCoroutine;
 
     void Start()
@@ -21,6 +99,13 @@ public class EnemySpawner : MonoBehaviour
     {
         while (canSpawn)
         {
+            // 🔹 플레이어 사망 체크
+            if (HurtPlayer.Instance != null && HurtPlayer.Instance.IsDead())
+            {
+                Debug.Log("플레이어 사망! 스폰 중단");
+                yield break; // 코루틴 종료
+            }
+
             SpawnEnemy();
             yield return new WaitForSeconds(spawnInterval);
         }
@@ -30,24 +115,21 @@ public class EnemySpawner : MonoBehaviour
     {
         if (enemyPrefab != null)
         {
-            Instantiate(enemyPrefab, leftSpawnPoint.transform.position, Quaternion.identity);
-            Instantiate(enemyPrefab, rightSpawnPoint.transform.position, Quaternion.identity);
+            Instantiate(enemyPrefab, SpawnPoint.position, Quaternion.identity);
+           
         }
     }
 
-    // 🔹 스폰 중단 함수
     public void StopSpawning()
     {
         canSpawn = false;
 
-        // 코루틴 중단
         if (spawnCoroutine != null)
             StopCoroutine(spawnCoroutine);
 
         Debug.Log($"[{gameObject.name}] Enemy Spawning Stopped!");
     }
 
-    // 🔹 스폰 재개 함수 (옵션)
     public void ResumeSpawning()
     {
         if (!canSpawn)
@@ -58,3 +140,7 @@ public class EnemySpawner : MonoBehaviour
     }
 }
 
+
+
+
+*/

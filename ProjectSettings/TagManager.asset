@@ -91,3 +91,6 @@ TagManager:
   - name: E_Player
     uniqueID: 168991469
     locked: 0
+  - name: DeathBackGround
+    uniqueID: 2896318193
+    locked: 0
