@@ -38,6 +38,9 @@ public class Teleport : MonoBehaviour
         {
             Camera.main.GetComponent<CameraLimit>().UpdateBounds(nextMapBound);
         }
+
+        // 3. 포탈 비활성화
+        gameObject.SetActive(false);
     }
 }
 
