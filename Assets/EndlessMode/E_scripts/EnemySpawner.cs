@@ -1,24 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Spawn Settings")]
     public GameObject enemyPrefab;       // 소환할 적 프리팹
-    public Transform spawnPoint;         // 스폰 위치
     public int maxSpawnCount = 5;        // 최대 스폰 수 (인스펙터에서 설정)
     public float spawnInterval = 2f;     // 스폰 간격
 
     [Header("Portal Settings")]
     public GameObject portalPrefab;      // 모든 적 처치 후 생성될 포탈
-    public Transform portalSpawnPoint;   // 포탈 생성 위치
 
     private int currentSpawned = 0;      // 현재 스폰된 적 수
     private int deadCount = 0;           // 사망한 적 수
     private bool spawning = false;       // 스폰 진행 여부
 
     private Coroutine spawnRoutine;
+
+    private Transform thisPos;
+
+    private void Start()
+    {
+        thisPos = GetComponent<Transform>();
+    }
+
 
     // 외부에서 트리거가 불리면 스폰 시작
     public void StartSpawning()
@@ -39,9 +46,9 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnEnemy()
     {
-        if (enemyPrefab == null || spawnPoint == null) return;
+        if (enemyPrefab == null) return;
 
-        GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+        GameObject enemy = Instantiate(enemyPrefab, thisPos.position, Quaternion.identity);
         currentSpawned++;
 
         // enemyTest에서 이 스포너로 접근할 수 있게 등록
@@ -68,9 +75,9 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnPortal()
     {
-        if (portalPrefab != null && portalSpawnPoint != null)
+        if (portalPrefab != null)
         {
-            Instantiate(portalPrefab, portalSpawnPoint.position, Quaternion.identity);
+            portalPrefab.SetActive(true);
             Debug.Log("포탈 생성 완료!");
         }
     }
