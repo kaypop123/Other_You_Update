@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class Teleport : MonoBehaviour
 {
-    public GameObject targetObj; // ÇÃ·¹ÀÌ¾î
-    public GameObject toObj;     // ÅÚÆ÷ µµÂø À§Ä¡
+    public GameObject targetObj; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½
+    public GameObject toObj;     // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
 
-    [Header("´ÙÀ½ ¸ÊÀÇ Ä«¸Ş¶ó °æ°è ¹Ú½º")]
-    public BoxCollider2D nextMapBound;   // Ãß°¡µÊ
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Ş¶ï¿½ ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½")]
+    public BoxCollider2D nextMapBound;   // ï¿½ß°ï¿½ï¿½ï¿½
+    // [ì¶”ê°€] ìŠ¤í…Œì´ì§€ ë¦¬ì…‹ ê´€ë ¨ ë³€ìˆ˜
+    public EnemySpawner targetSpawner;   // ì´ˆê¸°í™”í•  ìŠ¤í¬ë„ˆ
+    public SpawnTrigger targetTrigger;   // ì´ˆê¸°í™”í•  íŠ¸ë¦¬ê±°
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -30,17 +34,27 @@ public class Teleport : MonoBehaviour
     {
         yield return null;
 
-        // 1. ÇÃ·¹ÀÌ¾î ÀÌµ¿
+        // 1. ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ìµï¿½
         targetObj.transform.position = toObj.transform.position;
 
-        // 2. Ä«¸Ş¶ó °æ°è °»½Å
+        // 2. Ä«ï¿½Ş¶ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (nextMapBound != null)
         {
             Camera.main.GetComponent<CameraLimit>().UpdateBounds(nextMapBound);
         }
 
-        // 3. Æ÷Å» ºñÈ°¼ºÈ­
+        // 3. ï¿½ï¿½Å» ï¿½ï¿½È°ï¿½ï¿½È­
         gameObject.SetActive(false);
+
+        // [ì¶”ê°€] ìŠ¤í…Œì´ì§€ ì´ˆê¸°í™” ë¡œì§ (í…”ë ˆí¬íŠ¸ ëë‚œ í›„)
+        if (targetSpawner != null)
+            targetSpawner.ResetSpawner();
+
+        if (targetTrigger != null)
+            targetTrigger.ResetTrigger();
+
+        Debug.Log("í¬íƒˆ ì´ë™ í›„ ìŠ¤í…Œì´ì§€ ì´ˆê¸°í™” ì™„ë£Œ!");
+
     }
 }
 
@@ -52,8 +66,8 @@ using UnityEngine;
 
 public class Teleport : MonoBehaviour
 {
-    public GameObject targetObj; // ÇÃ·¹ÀÌ¾î
-    public GameObject toObj; // ÅÚÆ÷ Àå¼Ò
+    public GameObject targetObj; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½
+    public GameObject toObj; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 
     Animator animator;
 
