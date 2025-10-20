@@ -53,11 +53,21 @@ public class Teleport : MonoBehaviour
         if (targetTrigger != null)
             targetTrigger.ResetTrigger();
 
-        Debug.Log("포탈 이동 후 스테이지 초기화 완료!");
+        // =======================
+        // 🔹 스테이지 리셋 후 상태 로깅
+        // =======================
+        if (targetSpawner != null)
+        {
+            Debug.Log(
+                 $"[Teleport] Reset 후 상태 → " +
+                 $"Spawned: {targetSpawner.GetType().GetField("currentSpawned", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(targetSpawner)}, " +
+                 $"Dead: {targetSpawner.GetType().GetField("deadCount", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(targetSpawner)}"
+                 );
 
+            Debug.Log("포탈 이동 후 스테이지 초기화 완료!");
+        }
     }
 }
-
 
 
 /*using System.Collections;
