@@ -34,16 +34,16 @@ public class Teleport : MonoBehaviour
     {
         yield return null;
 
-        // 1. �÷��̾� �̵�
+        // 1. 플레이어 이동
         targetObj.transform.position = toObj.transform.position;
 
-        // 2. ī�޶� ��� ����
+        // 2. 카메라 경계 갱신
         if (nextMapBound != null)
         {
             Camera.main.GetComponent<CameraLimit>().UpdateBounds(nextMapBound);
         }
 
-        // 3. ��Ż ��Ȱ��ȭ
+        // 3. 포탈 비활성화
         gameObject.SetActive(false);
 
         // [추가] 스테이지 초기화 로직 (텔레포트 끝난 후)

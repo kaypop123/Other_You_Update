@@ -12,7 +12,7 @@ public class SpawnTrigger : MonoBehaviour
         {
             Debug.Log("�÷��̾ ���� Ʈ���ſ� ����!");
             targetSpawner.StartSpawning();
-            Destroy(gameObject); // �� ���� �۵��ϰ�
+            GetComponent<Collider2D>().enabled = false;
         }
     }
 
@@ -20,7 +20,7 @@ public class SpawnTrigger : MonoBehaviour
     public void ResetTrigger()
     {
         // 트리거 Collider 비활성/활성으로 리셋
-        GetComponent<Collider2D>().enabled = false;
+
         GetComponent<Collider2D>().enabled = true;
         Debug.Log($"[{gameObject.name}] 트리거 리셋 완료");
     }
