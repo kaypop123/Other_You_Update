@@ -407,7 +407,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: c979ed0af0bb3524fbda25774d15a8bd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -556,6 +556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5080b6ec60345834282459ae471bdf32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mySpawner: {fileID: 0}
   bloodEffectPrefabs:
   - {fileID: 4698163755516257917, guid: 3db203f6ad819eb44baad9c4f311343d, type: 3}
   - {fileID: 2249573650083905365, guid: 79293c1378c58cc42861d748264a7653, type: 3}
