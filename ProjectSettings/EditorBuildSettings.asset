@@ -104,4 +104,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/EndlessMode/EndlessMode.unity
     guid: 221d041fa6c98f94fbbf6333a8aec432
+  - enabled: 1
+    path: Assets/Scenes/EndlessMode_New.unity
+    guid: 23dd002439d913a479b64e7afffdba9b
   m_configObjects: {}

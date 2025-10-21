@@ -16,7 +16,7 @@ public class Teleport : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") || collision.CompareTag("DevaPlayer"))
         {
             targetObj = collision.gameObject;
         }
@@ -24,7 +24,7 @@ public class Teleport : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player")||collision.CompareTag("DevaPlayer"))
         {
             StartCoroutine(TeleportRoutine());
         }
@@ -54,7 +54,7 @@ public class Teleport : MonoBehaviour
             targetTrigger.ResetTrigger();
 
         // =======================
-        // 🔹 스테이지 리셋 후 상태 로깅
+        //  스테이지 리셋 후 상태 로깅
         // =======================
         if (targetSpawner != null)
         {

@@ -8,7 +8,7 @@ public class SpawnTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && targetSpawner != null)
+        if (collision.CompareTag("Player")||(collision.CompareTag("DevaPlayer") && targetSpawner != null))
         {
             Debug.Log("�÷��̾ ���� Ʈ���ſ� ����!");
             targetSpawner.StartSpawning();
