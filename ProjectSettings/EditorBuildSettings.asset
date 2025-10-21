@@ -101,7 +101,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Title/KeySet.unity
     guid: 090766daf048ea74d9d12b41a9f93629
-  - enabled: 1
+  - enabled: 0
     path: Assets/EndlessMode/EndlessMode.unity
     guid: 221d041fa6c98f94fbbf6333a8aec432
   m_configObjects: {}
