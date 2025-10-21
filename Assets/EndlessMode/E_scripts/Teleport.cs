@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Teleport : MonoBehaviour
 {
-    public GameObject targetObj; // �÷��̾�
-    public GameObject toObj;     // ���� ���� ��ġ
+    public GameObject targetObj; // 현텔레포트 위치
+    public GameObject toObj;     // 다음텔레포트 위치
 
     [Header("���� ���� ī�޶� ��� �ڽ�")]
     public BoxCollider2D nextMapBound;   // �߰���
