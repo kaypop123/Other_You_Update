@@ -46,12 +46,17 @@ public class Teleport : MonoBehaviour
         // 3. 포탈 비활성화
         gameObject.SetActive(false);
 
+
         // [추가] 스테이지 초기화 로직 (텔레포트 끝난 후)
         if (targetSpawner != null)
             targetSpawner.ResetSpawner();
 
         if (targetTrigger != null)
             targetTrigger.ResetTrigger();
+
+        // 스테이지 증가 (ㅎㅈ)
+        StageManager.Instance.IncreaseStageAndShow();
+
 
         // =======================
         //  스테이지 리셋 후 상태 로깅
