@@ -13,6 +13,7 @@ public class Bgmcontrol : MonoBehaviour
     public AudioSource fireAudioSource; // 챕터1-3 불타는소리용 서브 AudioSource
     public AudioSource DungeonAudioSource; // 던전 BGM용 서브 AudioSource
     public AudioSource BossAudioSource; // 보스용 서브 AudioSource
+    public AudioSource EndlessAudioSource; // 무한모드용 서브 AudioSource
     public AudioClip townBGM;          // 마을 씬에서 재생할 BGM
     public AudioClip fightBGM;          // 챕터1-3 씬에서 재생할 BGM
     public AudioClip DungeonBGM;          // 던전 씬에서 재생할 BGM
@@ -42,6 +43,7 @@ public class Bgmcontrol : MonoBehaviour
         if (fireAudioSource != null) fireAudioSource.volume = savedVolume;
         if (DungeonAudioSource != null) DungeonAudioSource.volume = savedVolume;
         if (BossAudioSource != null) BossAudioSource.volume = savedVolume;
+        if (EndlessAudioSource != null) EndlessAudioSource.volume = savedVolume;
 
         SceneManager.sceneLoaded += OnSceneLoaded;
 
@@ -61,6 +63,7 @@ public class Bgmcontrol : MonoBehaviour
             if (fireAudioSource.isPlaying) TutorialAudioSource.Stop();
             if (DungeonAudioSource.isPlaying) TutorialAudioSource.Stop();
             if (BossAudioSource.isPlaying) BossAudioSource.Stop();
+            if (EndlessAudioSource.isPlaying) EndlessAudioSource.Stop();
 
             if (subAudioSource.clip != townBGM)
             {
@@ -85,6 +88,7 @@ public class Bgmcontrol : MonoBehaviour
             if (fireAudioSource.isPlaying) TutorialAudioSource.Stop();
             if (DungeonAudioSource.isPlaying) TutorialAudioSource.Stop();
             if (BossAudioSource.isPlaying) BossAudioSource.Stop();
+            if (EndlessAudioSource.isPlaying) EndlessAudioSource.Stop();
 
             if (!bgmAudioSource.isPlaying)
             {
@@ -100,7 +104,7 @@ public class Bgmcontrol : MonoBehaviour
             if (fireAudioSource.isPlaying) TutorialAudioSource.Stop();
             if (DungeonAudioSource.isPlaying) TutorialAudioSource.Stop();
             if (BossAudioSource.isPlaying) BossAudioSource.Stop();
-
+            if (EndlessAudioSource.isPlaying) EndlessAudioSource.Stop();
             if (!TutorialAudioSource.isPlaying)
             {
                 TutorialAudioSource.Play();
@@ -114,7 +118,7 @@ public class Bgmcontrol : MonoBehaviour
             if (TutorialAudioSource.isPlaying) TutorialAudioSource.Stop();
             if (DungeonAudioSource.isPlaying) TutorialAudioSource.Stop();
             if (BossAudioSource.isPlaying) BossAudioSource.Stop();
-
+            if (EndlessAudioSource.isPlaying) EndlessAudioSource.Stop();
             if (!fightAudioSource.isPlaying)
             {
                 fightAudioSource.Play();
@@ -133,14 +137,14 @@ public class Bgmcontrol : MonoBehaviour
             if (fightAudioSource.isPlaying) fightAudioSource.Stop();
             if (fireAudioSource.isPlaying) fireAudioSource.Stop();
             if (BossAudioSource.isPlaying) BossAudioSource.Stop();
-
+            if (EndlessAudioSource.isPlaying) EndlessAudioSource.Stop();
             if (!DungeonAudioSource.isPlaying)
             {
                 DungeonAudioSource.Play();
             }
         }
         // 보스 전투씬
-        else if (sceneName == "FinalChapter" || sceneName =="FinalChapterHard")
+        else if (sceneName == "FinalChapter" || sceneName == "FinalChapterHard")
         {
             if (bgmAudioSource.isPlaying) bgmAudioSource.Pause();
             if (subAudioSource.isPlaying) subAudioSource.Stop();
@@ -148,25 +152,46 @@ public class Bgmcontrol : MonoBehaviour
             if (fightAudioSource.isPlaying) fightAudioSource.Stop();
             if (fireAudioSource.isPlaying) fireAudioSource.Stop();
             if (DungeonAudioSource.isPlaying) DungeonAudioSource.Stop();
-
+            if (EndlessAudioSource.isPlaying) EndlessAudioSource.Stop();
             if (!BossAudioSource.isPlaying)
             {
                 BossAudioSource.clip = BossBgm;
                 BossAudioSource.Play();
             }
-            //보스연습방 브금 삭제
-            else if (sceneName == "BossAdamMeetTimeLine" || sceneName == "end" || sceneName == "BossPractice" || sceneName == "BossPracticeHard"|| sceneName == "BossAdamMeetTimeLineHard")
+        }
+        //보스연습방 브금 삭제
+        else if (sceneName == "BossAdamMeetTimeLine" || sceneName == "end" || sceneName == "BossPractice" || sceneName == "BossPracticeHard" || sceneName == "BossAdamMeetTimeLineHard")
+        {
+            if (bgmAudioSource.isPlaying) bgmAudioSource.Pause();
+            if (subAudioSource.isPlaying) subAudioSource.Stop();
+            if (TutorialAudioSource.isPlaying) TutorialAudioSource.Stop();
+            if (fightAudioSource.isPlaying) fightAudioSource.Stop();
+            if (fireAudioSource.isPlaying) fireAudioSource.Stop();
+            if (BossAudioSource.isPlaying) BossAudioSource.Stop();
+            if (EndlessAudioSource.isPlaying) EndlessAudioSource.Stop();
+
+            if (!DungeonAudioSource.isPlaying)
             {
-                if (bgmAudioSource.isPlaying) bgmAudioSource.Pause();
-                if (subAudioSource.isPlaying) subAudioSource.Stop();
-                if (TutorialAudioSource.isPlaying) TutorialAudioSource.Stop();
-                if (fightAudioSource.isPlaying) fightAudioSource.Stop();
-                if (fireAudioSource.isPlaying) fireAudioSource.Stop();
-                if (DungeonAudioSource.isPlaying) DungeonAudioSource.Stop();
-                if (BossAudioSource.isPlaying) BossAudioSource.Stop();
+                DungeonAudioSource.Play();
+            }
+        }
+        else if (sceneName == "EndlessMode_New")
+        {
+            if (bgmAudioSource.isPlaying) bgmAudioSource.Pause();
+            if (subAudioSource.isPlaying) subAudioSource.Stop();
+            if (TutorialAudioSource.isPlaying) TutorialAudioSource.Stop();
+            if (fightAudioSource.isPlaying) fightAudioSource.Stop();
+            if (fireAudioSource.isPlaying) fireAudioSource.Stop();
+            if (DungeonAudioSource.isPlaying) DungeonAudioSource.Stop();
+            if (BossAudioSource.isPlaying) BossAudioSource.Stop();
+
+            if (!EndlessAudioSource.isPlaying)
+            {
+                EndlessAudioSource.Play();
             }
         }
     }
+
     public AudioSource GetCurrentBgm()
     {
         if (subAudioSource != null && subAudioSource.isPlaying)
@@ -189,6 +214,9 @@ public class Bgmcontrol : MonoBehaviour
 
         if (BossAudioSource != null && BossAudioSource.isPlaying)
             return BossAudioSource;
+
+        if (EndlessAudioSource != null && EndlessAudioSource.isPlaying)
+            return EndlessAudioSource;
 
         return null;
     }

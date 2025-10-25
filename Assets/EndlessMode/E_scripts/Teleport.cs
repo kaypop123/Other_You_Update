@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class Teleport : MonoBehaviour
 {
-    public GameObject targetObj; // �÷��̾�
-    public GameObject toObj;     // ���� ���� ��ġ
+    public GameObject targetObj; // 현텔레포트 위치
+    public GameObject toObj;     // 다음텔레포트 위치
 
-    [Header("���� ���� ī�޶� ��� �ڽ�")]
-    public BoxCollider2D nextMapBound;   // �߰���
+    [Header("���� ���� ī�޶� ��� �ڽ�")]
+    public BoxCollider2D nextMapBound;   // �߰���
+    // [추가] 스테이지 리셋 관련 변수
+    public EnemySpawner targetSpawner;   // 초기화할 스포너
+    public SpawnTrigger targetTrigger;   // 초기화할 트리거
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") || collision.CompareTag("DevaPlayer"))
         {
             targetObj = collision.gameObject;
         }
@@ -20,7 +24,7 @@ public class Teleport : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player")||collision.CompareTag("DevaPlayer"))
         {
             StartCoroutine(TeleportRoutine());
         }
@@ -30,20 +34,40 @@ public class Teleport : MonoBehaviour
     {
         yield return null;
 
-        // 1. �÷��̾� �̵�
+        // 1. 플레이어 이동
         targetObj.transform.position = toObj.transform.position;
 
-        // 2. ī�޶� ��� ����
+        // 2. 카메라 경계 갱신
         if (nextMapBound != null)
         {
             Camera.main.GetComponent<CameraLimit>().UpdateBounds(nextMapBound);
         }
 
-        // 3. ��Ż ��Ȱ��ȭ
+        // 3. 포탈 비활성화
         gameObject.SetActive(false);
+
+        // [추가] 스테이지 초기화 로직 (텔레포트 끝난 후)
+        if (targetSpawner != null)
+            targetSpawner.ResetSpawner();
+
+        if (targetTrigger != null)
+            targetTrigger.ResetTrigger();
+
+        // =======================
+        //  스테이지 리셋 후 상태 로깅
+        // =======================
+        if (targetSpawner != null)
+        {
+            Debug.Log(
+                 $"[Teleport] Reset 후 상태 → " +
+                 $"Spawned: {targetSpawner.GetType().GetField("currentSpawned", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(targetSpawner)}, " +
+                 $"Dead: {targetSpawner.GetType().GetField("deadCount", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(targetSpawner)}"
+                 );
+
+            Debug.Log("포탈 이동 후 스테이지 초기화 완료!");
+        }
     }
 }
-
 
 
 /*using System.Collections;
@@ -52,8 +76,8 @@ using UnityEngine;
 
 public class Teleport : MonoBehaviour
 {
-    public GameObject targetObj; // �÷��̾�
-    public GameObject toObj; // ���� ���
+    public GameObject targetObj; // �÷��̾�
+    public GameObject toObj; // ���� ���
 
     Animator animator;
 

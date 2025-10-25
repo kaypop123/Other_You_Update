@@ -8,11 +8,21 @@ public class SpawnTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && targetSpawner != null)
+        if (collision.CompareTag("Player")||(collision.CompareTag("DevaPlayer") && targetSpawner != null))
         {
-            Debug.Log("ÇÃ·¹ÀÌ¾î°¡ ½ºÆù Æ®¸®°Å¿¡ ÁøÀÔ!");
+            Debug.Log("ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½Å¿ï¿½ ï¿½ï¿½ï¿½ï¿½!");
             targetSpawner.StartSpawning();
-            Destroy(gameObject); // ÇÑ ¹ø¸¸ ÀÛµ¿ÇÏ°Ô
+            GetComponent<Collider2D>().enabled = false;
         }
     }
+
+    // [ì¶”ê°€] íŠ¸ë¦¬ê±° ë‹¤ì‹œ ì‘ë™ ê°€ëŠ¥í•˜ê²Œ ë¦¬ì…‹
+    public void ResetTrigger()
+    {
+        // íŠ¸ë¦¬ê±° Collider ë¹„í™œì„±/í™œì„±ìœ¼ë¡œ ë¦¬ì…‹
+
+        GetComponent<Collider2D>().enabled = true;
+        Debug.Log($"[{gameObject.name}] íŠ¸ë¦¬ê±° ë¦¬ì…‹ ì™„ë£Œ");
+    }
+
 }
