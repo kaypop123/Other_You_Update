@@ -337,7 +337,7 @@ MonoBehaviour:
   attackRange: 1.99
   speed: 3
   isFacingRight: 1
-  attackDamage: 10
+  attackDamage: 40
   frontCollider: {fileID: 3776794268627206840}
   ignoreEnemyNames: []
 --- !u!114 &3322681379011398181
@@ -359,11 +359,11 @@ MonoBehaviour:
   - {fileID: 4309611419653307369, guid: da90dd40db267074bb2dd68a27c1593d, type: 3}
   parringEffects: {fileID: 0}
   bloodEffectParticle: {fileID: 0}
-  MaxHealth: 100
+  MaxHealth: 60
   currentHealth: 0
   knockbackForce: 5
   xpReward: 50
-  score: 300
+  score: 1200
   pos: {fileID: 234355760753786301}
 --- !u!1 &3428435720692186684
 GameObject:

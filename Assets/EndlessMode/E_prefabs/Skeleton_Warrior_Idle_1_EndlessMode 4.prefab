@@ -332,7 +332,7 @@ MonoBehaviour:
   attackRange: 1.99
   speed: 3
   isFacingRight: 1
-  attackDamage: 10
+  attackDamage: 50
   frontCollider: {fileID: 2075317093181912503}
   ignoreEnemyNames: []
 --- !u!114 &5318603585487218334
@@ -358,7 +358,7 @@ MonoBehaviour:
   currentHealth: 0
   knockbackForce: 1.5
   xpReward: 50
-  score: 400
+  score: 1600
   pos: {fileID: 2740304141361452963}
 --- !u!50 &5398140560277912776
 Rigidbody2D:
