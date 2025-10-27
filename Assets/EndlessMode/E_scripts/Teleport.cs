@@ -13,8 +13,8 @@ public class Teleport : MonoBehaviour
     public EnemySpawner targetSpawner;   // 초기화할 스포너
     public EnemySpawner targetSpawner2;   // 초기화할 스포너2
     public SpawnTrigger targetTrigger;   // 초기화할 트리거
-    public GameObject d_fireballSpawner;   // 비활성화할 오브젝트
-    public GameObject s_fireballSpawner;   // 활성화할 오브젝트
+    public FireBallSpawner d_fireballSpawner;   // 비활성화할 오브젝트
+    public FireBallSpawner s_fireballSpawner;   // 활성화할 오브젝트
 
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -52,11 +52,11 @@ public class Teleport : MonoBehaviour
         // 4. 파이어볼 스포너
         if (d_fireballSpawner != null)
         {
-            d_fireballSpawner.SetActive(false);
+            d_fireballSpawner.enabled = false;
         }
         if (s_fireballSpawner != null)
         {
-            s_fireballSpawner.SetActive(true);
+            s_fireballSpawner.enabled = true;
         }
 
         // [추가] 스테이지 초기화 로직 (텔레포트 끝난 후)
