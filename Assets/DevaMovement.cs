@@ -582,7 +582,14 @@ public class DebaraMovement : MonoBehaviour
         Debug.Log("Deba ������ ��ų ���� �ʱ�ȭ �Ϸ�");
     }
     [SerializeField] private DevaBigLaserSkill bigLaserSkill; // �ν����� ����
-
+    public void StartisInvincible()
+    {
+               isInvincible = true;
+    }
+    public void EndisInvincible()
+    {
+        isInvincible = false;
+    }
     public void EndBigLaserFromAnimation()
     {
         if (bigLaserSkill != null)

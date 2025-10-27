@@ -13,9 +13,14 @@ public class BossAttackHitbox : MonoBehaviour
         // 아담
         if (other.CompareTag("Player"))
         {
+            AdamMovement adamMovement = other.GetComponent<AdamMovement>();
             HurtPlayer hurtPlayer = other.GetComponent<HurtPlayer>();
             if (hurtPlayer != null)
             {
+                if (adamMovement.isInvincible)
+                {
+                    return;
+                }
                 hurtPlayer.TakeDamage(damage);
                 Debug.Log("보스가 Player에게 데미지!");
             }
@@ -25,8 +30,15 @@ public class BossAttackHitbox : MonoBehaviour
         else if (other.CompareTag("DevaPlayer"))
         {
             HurtDeva hurtDeva = other.GetComponent<HurtDeva>();
-            if (hurtDeva != null)
+            DebaraMovement devaMovement = other.GetComponent<DebaraMovement>();
+
+            if (hurtDeva != null && devaMovement != null)
             {
+                if (devaMovement.isInvincible)
+                {
+                    return;
+                }
+
                 hurtDeva.TakeDamage(damage);
                 Debug.Log("보스가 DevaPlayer에게 데미지!");
             }
