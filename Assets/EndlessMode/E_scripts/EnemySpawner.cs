@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Spawn Settings")]
-    public GameObject enemyPrefab;       // 소환할 적 프리팹
+    public GameObject[] enemyPrefab;       // 소환할 적 프리팹
     public int maxSpawnCount = 5;        // 최대 스폰 수 (인스펙터에서 설정)
     public float spawnInterval = 2f;     // 스폰 간격
 
@@ -50,7 +50,28 @@ public class EnemySpawner : MonoBehaviour
     {
         if (enemyPrefab == null) return;
 
-        GameObject enemy = Instantiate(enemyPrefab, thisPos.position, Quaternion.identity);
+        GameObject enemy;
+        if (StageManager.currentStage <= 5)
+        {
+            enemy = Instantiate(enemyPrefab[0], thisPos.position, Quaternion.identity);
+        }
+        else if(StageManager.currentStage <= 10)
+        {
+            enemy = Instantiate(enemyPrefab[1], thisPos.position, Quaternion.identity);
+        }
+        else if (StageManager.currentStage <= 15)
+        {
+            enemy = Instantiate(enemyPrefab[2], thisPos.position, Quaternion.identity);
+        }
+        else if (StageManager.currentStage <= 20)
+        {
+            enemy = Instantiate(enemyPrefab[3], thisPos.position, Quaternion.identity);
+        }
+        else
+        {
+            enemy = Instantiate(enemyPrefab[4], thisPos.position, Quaternion.identity);
+        }
+
         currentSpawned++;
 
         // enemyTest에서 이 스포너로 접근할 수 있게 등록
