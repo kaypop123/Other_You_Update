@@ -363,6 +363,10 @@ MonoBehaviour:
   currentHealth: 0
   knockbackForce: 5
   xpReward: 50
+<<<<<<< Updated upstream
+=======
+  score: 300
+>>>>>>> Stashed changes
   pos: {fileID: 234355760753786301}
 --- !u!1 &3428435720692186684
 GameObject:
