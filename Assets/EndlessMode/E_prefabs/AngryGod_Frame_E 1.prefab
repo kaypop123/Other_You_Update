@@ -785,7 +785,7 @@ GameObject:
   - component: {fileID: 7415023658690490038}
   - component: {fileID: 7178054322334731813}
   m_Layer: 11
-  m_Name: AngryGod_Frame_E
+  m_Name: AngryGod_Frame_E 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1106,7 +1106,7 @@ MonoBehaviour:
   bloodEffectParticle: {fileID: 8799732428172655049, guid: e74f27fcd794341459051ba4e22e3e0c, type: 3}
   mySpawner: {fileID: 0}
   bossAnimator: {fileID: 0}
-  MaxHealth: 100
+  MaxHealth: 200
   currentHealth: 0
   xpReward: 2000000
   score: 3000
