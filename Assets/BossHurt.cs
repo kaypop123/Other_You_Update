@@ -165,7 +165,16 @@ public class BossHurt : MonoBehaviour
                 cameraShake.StartCoroutine(cameraShake.Shake(0.1f, 0.1f));
         }
     }
+    public void FreezeBoss()
+    {
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero; // 현재 속도 0으로 설정
+            rb.angularVelocity = 0f;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;//보스 정지 
 
+        }
+    }
     private IEnumerator Die(bool fromAdam, bool fromDeba)
     {
         if (isDying) yield break;
