@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement; // 맨 위에 추가 필요
 public class BossHurt : MonoBehaviour
 {
+    public bool Emode = false;
     [Header("Phase Object")]
     public GameObject phase2Object;
     public GameObject phase2ObjectAnime;
@@ -17,6 +18,8 @@ public class BossHurt : MonoBehaviour
 
     private CameraShakeSystem cameraShake;
 
+    public EnemySpawner mySpawner;
+
     [Header("애니메이터")]
     public Animator bossAnimator;
 
@@ -24,6 +27,7 @@ public class BossHurt : MonoBehaviour
     public int MaxHealth = 100;
     public int currentHealth;
     public int xpReward = 50;
+    public int score;
 
     [Header("Flags")]
     private bool isDying = false;
@@ -43,6 +47,7 @@ public class BossHurt : MonoBehaviour
         col = GetComponent<Collider2D>();
         cameraShake = Camera.main != null ? Camera.main.GetComponent<CameraShakeSystem>() : null;
         aiCore = GetComponent<AngryGodAiCore>();
+        bossAnimator = GetComponent<Animator>();
 
         if (aiCore == null) Debug.LogError("AngryGodAiCore component missing on " + gameObject.name);
 
@@ -165,6 +170,13 @@ public class BossHurt : MonoBehaviour
     {
         if (isDying) yield break;
         isDying = true;
+        bossAnimator.SetTrigger("Die");
+
+        if (ScoreManager.instance != null)
+        {
+            ScoreManager.instance.AddScore(score); // 점수 1 증가
+            Debug.Log("Score +1 | Total: " + ScoreManager.instance.score); // 콘솔에 표시
+        }
 
         Time.timeScale = 0.2f;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
@@ -178,12 +190,25 @@ public class BossHurt : MonoBehaviour
 
         Debug.Log("▶ 슬로우 모션 복구");
 
+        if (mySpawner != null)
+        {
+            mySpawner.OnEnemyDied();
+        }
+
+        if (Emode)
+        {
+            yield return new WaitForSeconds(10f);
+            Destroy(gameObject);
+        }
 
 
- 
 
         yield return new WaitForSeconds(1f);
-        Debug.Log("▶ 씬 이동 중...");
-        SceneManager.LoadScene("end"); // 여기에 전환할 씬 이름을 넣으세요
+        if (Emode == false)
+        {
+            Debug.Log("▶ 씬 이동 중...");
+            SceneManager.LoadScene("end"); // 여기에 전환할 씬 이름을 넣으세요
+        }
+        
     }
 }

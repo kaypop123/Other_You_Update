@@ -123,6 +123,8 @@ MonoBehaviour:
   targetObj: {fileID: 0}
   toObj: {fileID: 0}
   nextMapBound: {fileID: 0}
+  targetSpawner: {fileID: 0}
+  targetTrigger: {fileID: 0}
 --- !u!61 &2078188764199531225
 BoxCollider2D:
   m_ObjectHideFlags: 0

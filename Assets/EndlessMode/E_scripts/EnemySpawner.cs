@@ -53,6 +53,11 @@ public class EnemySpawner : MonoBehaviour
 
         // enemyTest에서 이 스포너로 접근할 수 있게 등록
         enemyTest enemyScript = enemy.GetComponent<enemyTest>();
+        BossHurt bossHurt = enemy.GetComponent<BossHurt>();
+        if (bossHurt != null)
+        {
+            bossHurt.mySpawner = this;
+        }
         if (enemyScript != null)
         {
             enemyScript.mySpawner = this;

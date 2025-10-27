@@ -42,7 +42,8 @@ public class AngryGodAiCore : MonoBehaviour
     private bool isAwakening = false; // 각성 애니메이션 중인지 여부
     private bool awakeningRequested = false; // BossHurt로부터 각성 요청을 받았는지 여부
     public float awakeningAnimationDuration = 3.0f; // 각성 애니메이션의 예상 길이 (인스펙터에서 조절 가능하게 public으로)
-    private BossHurt bossHurt;
+    public BossHurt bossHurt;
+
     // --- 이동 설정 ---
     [Header("이동 설정")]
     [Tooltip("플레이어 추적 시 기본 이동 속도")]
@@ -111,6 +112,7 @@ public class AngryGodAiCore : MonoBehaviour
         flameSkill = GetComponent<AngryGodFlameSkill>();
         ultimateSkill = GetComponent<AngryGodUltimateSkill>();
         bossHurt = GetComponent<BossHurt>();
+
         // 필수 컴포넌트 확인
         if (animator == null || rb == null || spriteRenderer == null || activeSkill1 == null) // ★ 수정: activeSkill1 추가
         {
@@ -406,6 +408,8 @@ public class AngryGodAiCore : MonoBehaviour
             // 사용하지 않을 수 있습니다. 또는 각성 애니메이션 자체에 이펙트가 포함될 수도 있습니다.
             // 만약 phase2ObjectAnime이 순수하게 이펙트용이라면 여기서 활성화할 수 있습니다.
             BossHurt bossHurt = GetComponent<BossHurt>();
+
+
             if (bossHurt != null && bossHurt.phase2ObjectAnime != null)
             {
                 // 만약 phase2ObjectAnime이 각성 '이펙트' 전용 오브젝트라면 여기서 활성화
@@ -424,6 +428,7 @@ public class AngryGodAiCore : MonoBehaviour
                 Debug.Log("[AI Core] 각성 후 Phase 2 오브젝트 활성화.");
                 bossHurt.phase2Object.SetActive(true);
             }
+
         }
         else if (direction == -1) // 각성 요청이 없었고, 백대쉬 상황일 때의 다른 행동들
         {
@@ -464,6 +469,7 @@ public class AngryGodAiCore : MonoBehaviour
                     {
                         Debug.Log("[AI Core] 체력 50% 초과 → 궁극기 발동 조건 불충족.");
                     }
+
                 }
                 else
                 {
