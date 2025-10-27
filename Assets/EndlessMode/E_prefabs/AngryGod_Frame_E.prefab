@@ -781,11 +781,11 @@ GameObject:
   - component: {fileID: 7808734890663504293}
   - component: {fileID: 5114088651347849766}
   - component: {fileID: 202918103994303415}
-  - component: {fileID: 6079458665642016540}
   - component: {fileID: 753906007530452824}
   - component: {fileID: 7415023658690490038}
+  - component: {fileID: 7178054322334731813}
   m_Layer: 11
-  m_Name: AngryGod_Frame_1
+  m_Name: AngryGod_Frame_E
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -976,6 +976,7 @@ MonoBehaviour:
   chaseDashTriggerRange: 5.61
   activeSkill1TriggerRange: 8.63
   awakeningAnimationDuration: 3
+  bossHurt: {fileID: 0}
   moveSpeed: 2
   dashDistance: 8
   dashDuration: 0.3
@@ -1056,34 +1057,6 @@ MonoBehaviour:
   flameCollider: {fileID: 6204673901124773934}
   afterImageInterval: 0.05
   afterImageLifetime: 0.5
---- !u!114 &6079458665642016540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8057310487108874888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07d85ce581800704bbe8cd0c75a9cb75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  phase2Object: {fileID: 2692660191998833407}
-  phase2ObjectAnime: {fileID: 5781587708788787287}
-  bloodEffectPrefabs:
-  - {fileID: 4698163755516257917, guid: 3db203f6ad819eb44baad9c4f311343d, type: 3}
-  - {fileID: 2249573650083905365, guid: 79293c1378c58cc42861d748264a7653, type: 3}
-  - {fileID: 4309611419653307369, guid: da90dd40db267074bb2dd68a27c1593d, type: 3}
-  parringEffects: {fileID: 0}
-  bloodEffectParticle: {fileID: 8799732428172655049, guid: e74f27fcd794341459051ba4e22e3e0c, type: 3}
-  bossAnimator: {fileID: 0}
-  MaxHealth: 100
-  currentHealth: 0
-  xpReward: 2000000
-  pos: {fileID: 3829817060612201191}
-  adamCharacter: {fileID: 0}
-  devaCharacter: {fileID: 0}
-  devaSpawnOffsetDistance: 1
 --- !u!114 &753906007530452824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1110,3 +1083,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cooldown: 20
   totalAnimationTime: 4
+--- !u!114 &7178054322334731813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8057310487108874888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07d85ce581800704bbe8cd0c75a9cb75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Emode: 1
+  phase2Object: {fileID: 2692660191998833407}
+  phase2ObjectAnime: {fileID: 5781587708788787287}
+  bloodEffectPrefabs:
+  - {fileID: 4698163755516257917, guid: 3db203f6ad819eb44baad9c4f311343d, type: 3}
+  - {fileID: 2249573650083905365, guid: 79293c1378c58cc42861d748264a7653, type: 3}
+  - {fileID: 4309611419653307369, guid: da90dd40db267074bb2dd68a27c1593d, type: 3}
+  parringEffects: {fileID: 0}
+  bloodEffectParticle: {fileID: 8799732428172655049, guid: e74f27fcd794341459051ba4e22e3e0c, type: 3}
+  mySpawner: {fileID: 0}
+  bossAnimator: {fileID: 0}
+  MaxHealth: 300
+  currentHealth: 0
+  xpReward: 2000000
+  score: 3000
+  pos: {fileID: 3829817060612201191}
+  adamCharacter: {fileID: 0}
+  devaCharacter: {fileID: 0}
+  devaSpawnOffsetDistance: 1

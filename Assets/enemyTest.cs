@@ -23,6 +23,7 @@ public class enemyTest : MonoBehaviour // 적의 피격 및 사망 처리 스크립트
     public int currentHealth; // 현재 체력
     public float knockbackForce = 5f; // 넉백 힘
     public int xpReward = 50; // 죽었을 때 줄 경험치량
+    public int score;
 
     [Header("Flags")]
     private bool isDying = false; // 죽는 중인지 여부
@@ -199,7 +200,7 @@ public class enemyTest : MonoBehaviour // 적의 피격 및 사망 처리 스크립트
         // 점수 1 증가 및 콘솔 출력 ㅎㅈㅎㅈㅎㅈ
         if (ScoreManager.instance != null)
         {
-            ScoreManager.instance.AddScore(1); // 점수 1 증가
+            ScoreManager.instance.AddScore(score); // 점수 1 증가
             Debug.Log("Score +1 | Total: " + ScoreManager.instance.score); // 콘솔에 표시
         } //ㅎㅈㅎㅈㅎㅈ
 

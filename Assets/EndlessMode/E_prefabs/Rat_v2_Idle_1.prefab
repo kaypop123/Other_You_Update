@@ -567,4 +567,5 @@ MonoBehaviour:
   currentHealth: 0
   knockbackForce: 5
   xpReward: 50
+  score: 200
   pos: {fileID: 5643036066877739388}
