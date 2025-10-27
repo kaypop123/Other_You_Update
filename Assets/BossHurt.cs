@@ -174,8 +174,7 @@ public class BossHurt : MonoBehaviour
 
         if (ScoreManager.instance != null)
         {
-            ScoreManager.instance.AddScore(score); // 점수 1 증가
-            Debug.Log("Score +1 | Total: " + ScoreManager.instance.score); // 콘솔에 표시
+            ScoreManager.instance.AddScore(score); // 점수 증가
         }
 
         Time.timeScale = 0.2f;
@@ -190,14 +189,17 @@ public class BossHurt : MonoBehaviour
 
         Debug.Log("▶ 슬로우 모션 복구");
 
+
+
         if (mySpawner != null)
         {
+            yield return new WaitForSeconds(2f);
             mySpawner.OnEnemyDied();
         }
 
         if (Emode)
         {
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(4f);
             Destroy(gameObject);
         }
 
