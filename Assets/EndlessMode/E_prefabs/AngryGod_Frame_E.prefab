@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 540d6b1eb2b035a43b42fc67f18e845d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 20
   fromAdam: 0
   fromDeba: 0
 --- !u!1 &5781587708788787287
@@ -464,7 +464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 540d6b1eb2b035a43b42fc67f18e845d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 30
+  damage: 50
   fromAdam: 0
   fromDeba: 0
 --- !u!1 &6749868804012400827
@@ -1106,7 +1106,7 @@ MonoBehaviour:
   bloodEffectParticle: {fileID: 8799732428172655049, guid: e74f27fcd794341459051ba4e22e3e0c, type: 3}
   mySpawner: {fileID: 0}
   bossAnimator: {fileID: 0}
-  MaxHealth: 300
+  MaxHealth: 100
   currentHealth: 0
   xpReward: 2000000
   score: 3000

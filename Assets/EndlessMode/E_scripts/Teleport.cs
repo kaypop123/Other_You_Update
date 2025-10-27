@@ -11,6 +11,7 @@ public class Teleport : MonoBehaviour
     public BoxCollider2D nextMapBound;   // �߰���
     // [추가] 스테이지 리셋 관련 변수
     public EnemySpawner targetSpawner;   // 초기화할 스포너
+    public EnemySpawner targetSpawner2;   // 초기화할 스포너2
     public SpawnTrigger targetTrigger;   // 초기화할 트리거
 
 
@@ -50,6 +51,8 @@ public class Teleport : MonoBehaviour
         // [추가] 스테이지 초기화 로직 (텔레포트 끝난 후)
         if (targetSpawner != null)
             targetSpawner.ResetSpawner();
+        if (targetSpawner2 != null)
+            targetSpawner2.ResetSpawner();
 
         if (targetTrigger != null)
             targetTrigger.ResetTrigger();

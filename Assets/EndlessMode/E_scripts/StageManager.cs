@@ -11,7 +11,7 @@ public class StageManager : MonoBehaviour
     public TextMeshProUGUI stageDisplayText; // 상시로 띄울 스테이지
     public CanvasGroup stageBackground; // 반투명 배경용 CanvasGroup
 
-    private int currentStage = 1;
+    static public int currentStage = 1;
 
     private void Awake()
     {
