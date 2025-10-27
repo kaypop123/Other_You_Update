@@ -228,14 +228,8 @@ public class DevaStats : MonoBehaviour
     {
         if (other.CompareTag("FireBall"))
         {
-            // 체력 0으로 만들기
-            currentHealth = 0;
-
-            // UI 갱신
-            if (DevaHealthBarUI.Instance != null)
-                DevaHealthBarUI.Instance.UpdateHealthBar(currentHealth);
-
-            Debug.Log("[Deva] FireBall에 맞아 체력 0 처리 완료");
+            if (HurtPlayer.Instance != null)
+                HurtPlayer.Instance.TakeDamage(100);
         }
     }
 

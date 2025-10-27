@@ -195,11 +195,6 @@ public class HurtPlayer : MonoBehaviour
             }
 
         }
-        if (other.CompareTag("FireBall"))
-        {
-            Debug.Log("파이어볼이 닿았습니다.");
-            Die();
-        }
     }
 
 
