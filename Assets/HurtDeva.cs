@@ -119,11 +119,6 @@ public class HurtDeva : MonoBehaviour
             if (cameraShake != null)
                 StartCoroutine(cameraShake.Shake(0.15f, 0.15f));
         }
-        if (other.CompareTag("FireBall"))
-        {
-            Debug.Log("파이어볼이 닿았습니다.");
-            Die();
-        }
     }
 
     public void TakeDamage(int damage)

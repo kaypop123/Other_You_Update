@@ -59,18 +59,8 @@ public class PlayerStats : MonoBehaviour
     {
         if (other.CompareTag("FireBall"))
         {
-            // 체력을 0으로 세팅
-            currentHealth = 0;
-
-            // UI 갱신
             if (HurtPlayer.Instance != null)
-                HurtPlayer.Instance.UpdateHealthUI();
-
-            // HurtPlayer의 TakeDamage로 Die() 호출
-            if (HurtPlayer.Instance != null)
-                HurtPlayer.Instance.TakeDamage(0);
-
-            Debug.Log("FireBall에 맞아 체력 0 처리 완료");
+                HurtPlayer.Instance.TakeDamage(100);
         }
     }
 
