@@ -14,13 +14,21 @@ public class FireBallSpawner : MonoBehaviour
     [Header("FireBall Settings")]
     public GameObject fireBallPrefab;  // FireBall ÇÁ¸®ÆÕ
 
-    private void Start()
-    {
-        StartCoroutine(coolTime());
-    }
-    void Update()
-    {
+    private Coroutine _coolTimeRoutine;
 
+    private void OnEnable()
+    {
+        if (_coolTimeRoutine == null)
+            _coolTimeRoutine = StartCoroutine(coolTime());
+    }
+
+    private void OnDisable()
+    {
+        if (_coolTimeRoutine != null)
+        {
+            StopCoroutine(_coolTimeRoutine);
+            _coolTimeRoutine = null;
+        }
     }
 
     IEnumerator coolTime()

@@ -228,8 +228,8 @@ public class DevaStats : MonoBehaviour
     {
         if (other.CompareTag("FireBall"))
         {
-            if (HurtPlayer.Instance != null)
-                HurtPlayer.Instance.TakeDamage(100);
+            if (HurtDeva.Instance != null)
+                HurtDeva.Instance.TakeDamage(100);
         }
     }
 
