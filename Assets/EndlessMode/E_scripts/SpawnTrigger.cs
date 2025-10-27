@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawnTrigger : MonoBehaviour
 {
     public EnemySpawner targetSpawner;
+    public EnemySpawner targetSpawner2;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -12,6 +13,12 @@ public class SpawnTrigger : MonoBehaviour
         {
             Debug.Log("�÷��̾ ���� Ʈ���ſ� ����!");
             targetSpawner.StartSpawning();
+            GetComponent<Collider2D>().enabled = false;
+        }
+        if (collision.CompareTag("Player") || (collision.CompareTag("DevaPlayer") && targetSpawner2 != null))
+        {
+            Debug.Log("�÷��̾ ���� Ʈ���ſ� ����!");
+            targetSpawner2.StartSpawning();
             GetComponent<Collider2D>().enabled = false;
         }
     }

@@ -15,7 +15,9 @@ public class EnemySpawner : MonoBehaviour
 
     private int currentSpawned = 0;      // 현재 스폰된 적 수
     private int deadCount = 0;           // 사망한 적 수
-    private bool spawning = false;       // 스폰 진행 여부
+    public bool spawning = false;       // 스폰 진행 여부
+
+    public EnemySpawner otherES;       //다른 스포너
 
     private Coroutine spawnRoutine;
 
@@ -74,8 +76,20 @@ public class EnemySpawner : MonoBehaviour
             Debug.Log($"모든 적 처치 완료! ({deadCount}/{maxSpawnCount})");
             StopAllCoroutines();
             spawning = false;
+
+        }
+        if (otherES != null)
+        {
+            if (!spawning && !otherES.spawning)
+            {
+                SpawnPortal();
+            }
+        }
+        else if (!spawning)
+        {
             SpawnPortal();
         }
+
     }
 
     void SpawnPortal()
