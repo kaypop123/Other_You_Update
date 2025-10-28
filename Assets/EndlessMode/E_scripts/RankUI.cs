@@ -1,58 +1,73 @@
-using System.Collections.Generic;
-using UnityEngine;
+using System;
+using System.IO;
 using TMPro;
+using UnityEngine;
 
 public class RankUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI rank1Text;
-    [SerializeField] private TextMeshProUGUI rank2Text;
-    [SerializeField] private TextMeshProUGUI rank3Text;
-
-    private List<int> scores = new List<int>();
+    [SerializeField] private TextMeshProUGUI[] rankText;
 
     void Start()
     {
         LoadRank();
-        UpdateRankUI();
-    }
-
-    public void AddNewScore(int newScore)
-    {
-        scores.Add(newScore);
-        scores.Sort((a, b) => b.CompareTo(a)); // 내림차순 정렬
-
-        // 3개까지만 저장
-        if (scores.Count > 3)
-            scores = scores.GetRange(0, 3);
-
-        SaveRank();
-        UpdateRankUI();
-    
-    }
-
-    private void UpdateRankUI()
-    {
-        rank1Text.text = scores.Count > 0 ? $"1위 : {scores[0]}" : "1위 : -";
-        rank2Text.text = scores.Count > 1 ? $"2위 : {scores[1]}" : "2위 : -";
-        rank3Text.text = scores.Count > 2 ? $"3위 : {scores[2]}" : "3위 : -";
-    }
-
-    private void SaveRank()
-    {
-        for (int i = 0; i < scores.Count; i++)
-        {
-            PlayerPrefs.SetInt("Rank" + i, scores[i]);
-        }
-        PlayerPrefs.Save();
     }
 
     private void LoadRank()
     {
-        scores.Clear();
-        for (int i = 0; i < 3; i++)
+        // LocalScoreManager가 씬에 존재한다는 전제
+        if (LocalScoreManager.Instance == null)
         {
-            if (PlayerPrefs.HasKey("Rank" + i))
-                scores.Add(PlayerPrefs.GetInt("Rank" + i));
+            Debug.LogWarning("LocalScoreManager.Instance가 없습니다.");
+            return;
+        }
+
+        string path = LocalScoreManager.Instance.DBFilePath;
+
+        if (File.Exists(path))
+        {
+            try
+            {
+                string loaded = File.ReadAllText(path);
+                string[] lines = loaded.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+
+                for (int i = 0; i < rankText.Length; i++)
+                {
+                    if (i < lines.Length)
+                    {
+                        
+                        var parts = lines[i].Split(',');
+                        if (parts.Length >= 3)
+                        {
+                            string rank = parts[0].Trim();
+                            string name = parts[1].Trim();
+                            string score = parts[2].Trim();
+                            rankText[i].text = $"{rank}위 / name: {name} / score: {score}";
+                        }
+                        else
+                        {
+                            rankText[i].text = lines[i];
+                        }
+                    }
+                    else
+                    {
+                        // 파일 라인보다 UI가 더 많을 때는 비워두기
+                        rankText[i].text = "";
+                    }
+                }
+
+                Debug.Log("랭킹 불러오기 완료!");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"랭킹 로드 실패: {e.Message}");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("저장된 메모 파일이 없습니다!");
+            // 파일이 없으면 UI를 기본값으로 정리
+            for (int i = 0; i < rankText.Length; i++)
+                rankText[i].text = "";
         }
     }
 }
