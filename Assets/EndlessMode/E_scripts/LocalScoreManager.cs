@@ -1,45 +1,38 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class LocalScoreManager : MonoBehaviour
 {
     public static LocalScoreManager Instance;
 
-    public int[] topScores = new int[3]; // 상위 3위 점수
+    private List<int> scores = new List<int>();
+    [SerializeField] private TextMeshProUGUI[] rankText;
 
-    private void Awake()
+    public void AddNewScore(int newScore)
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        scores.Add(newScore);
+        scores.Sort((a, b) => b.CompareTo(a)); // 내림차순 정렬
 
-        // PlayerPrefs에서 점수 불러오기
-        for (int i = 0; i < topScores.Length; i++)
-        {
-            topScores[i] = PlayerPrefs.GetInt("TopScore" + i, 0);
-        }
+        // 10개까지만 저장
+        if (scores.Count > 10)
+            scores = scores.GetRange(0, 10);
+
+        UpdateRankUI();
     }
 
-    public void AddScore(int score)
+    private void UpdateRankUI()
     {
-        for (int i = 0; i < topScores.Length; i++)
+        for (int i = 0; i < 10; i++)
         {
-            if (score > topScores[i])
-            {
-                // 점수 밀어내기
-                for (int j = topScores.Length - 1; j > i; j--)
-                    topScores[j] = topScores[j - 1];
-
-                topScores[i] = score;
-                SaveScores();
-                break;
-            }
+            rankText[i].text = scores.Count > i ? $"{i + 1}위 : {scores[i]}" : $"{i + 1}위 : -";
         }
+
+        SaveScores();
     }
 
     private void SaveScores()
     {
-        for (int i = 0; i < topScores.Length; i++)
-            PlayerPrefs.SetInt("TopScore" + i, topScores[i]);
-
-        PlayerPrefs.Save();
+        //메모장에 저장
     }
 }
