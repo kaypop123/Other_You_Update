@@ -320,6 +320,11 @@ public class HurtPlayer : MonoBehaviour
 
         CharacterAttack attack = GetComponent<CharacterAttack>();
         if (attack != null) attack.enabled = false;
+        AdamUltimateSkill Ultimate = GetComponent<AdamUltimateSkill>();
+        if (Ultimate != null) Ultimate.enabled = false;
+
+        AdamAttackSpeedBuff Buff = GetComponent<AdamAttackSpeedBuff>();
+        if (Buff != null) Buff.enabled = false;
 
         Debug.Log("모든 컨트롤러 비활성화됨");
     }
@@ -404,6 +409,11 @@ public class HurtPlayer : MonoBehaviour
         CharacterAttack attack = GetComponent<CharacterAttack>();
         if (attack != null) attack.enabled = true;
 
+        AdamUltimateSkill Ultimate = GetComponent<AdamUltimateSkill>();
+        if (Ultimate != null) Ultimate.enabled = true;
+
+        AdamAttackSpeedBuff Buff = GetComponent<AdamAttackSpeedBuff>();
+        if (Buff != null) Buff.enabled = true;
         Debug.Log("모든 컨트롤러 재활성화됨");
     }
     public bool IsDead()
