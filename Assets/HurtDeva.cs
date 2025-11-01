@@ -260,6 +260,11 @@ public class HurtDeva : MonoBehaviour
         MagicAttack magic = GetComponent<MagicAttack>();
         if (magic != null) magic.enabled = true;
 
+        DevaBigLaserSkill Laser = GetComponent<DevaBigLaserSkill>();
+        if (Laser != null) Laser.enabled = true;
+        DevaContinuousSkill skill = GetComponent<DevaContinuousSkill>();
+        if (skill != null) skill.enabled = true;
+
         // 레이어 초기화
         if (spriteRenderer != null)
             spriteRenderer.sortingOrder = 0;
@@ -298,6 +303,10 @@ public class HurtDeva : MonoBehaviour
 
         MagicAttack attack = GetComponent<MagicAttack>();
         if (attack != null) attack.enabled = false;
+        DevaBigLaserSkill Laser = GetComponent<DevaBigLaserSkill>();
+        if (Laser != null) Laser.enabled = false;
+        DevaContinuousSkill skill = GetComponent<DevaContinuousSkill>();
+        if (skill != null) skill.enabled = false;
     }
 
     private void ChangeLayerOnDeath()
