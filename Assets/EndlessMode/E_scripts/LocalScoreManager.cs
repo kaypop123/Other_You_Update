@@ -11,6 +11,7 @@ public class LocalScoreManager : MonoBehaviour
     private List<string> names = new List<string>();   // 점수와 1:1 매칭되는 이름 리스트
     private string[] rankingData;                      // 저장/출력용 라인 버퍼 (rank,name,score)
     [SerializeField] public string DBFilePath;
+    [SerializeField] public string playerName;
 
     // 환경에 따라 원하는 길이로 조절 가능 (UI 개수와 맞추면 편함)
     private const int MAX_RANK = 200;
@@ -41,6 +42,10 @@ public class LocalScoreManager : MonoBehaviour
     private string GetCurrentPlayerNameSafely()
     {
         // 예시: PlayerNameManager.Instance.PlayerName가 있다면 그걸 반환
+        if (playerName != null)
+        {
+            return playerName;
+        }
         // 없으면 "Player" 같은 기본값
         return "Player";
     }
