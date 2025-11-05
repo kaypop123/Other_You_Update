@@ -5,10 +5,11 @@ public class PauseManager : MonoBehaviour
     public GameObject pausePanel;
     private bool isPaused = false;
     private AudioSource currentBgm;
+    public GameObject startCanvas;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (!startCanvas.activeSelf && Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused)
                 ResumeGame();
