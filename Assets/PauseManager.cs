@@ -9,7 +9,7 @@ public class PauseManager : MonoBehaviour
 
     void Update()
     {
-        if (!startCanvas.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+        if ((startCanvas != null && !startCanvas.activeSelf && Input.GetKeyDown(KeyCode.Escape)))
         {
             if (isPaused)
                 ResumeGame();

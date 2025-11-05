@@ -353,7 +353,7 @@ public class AdamMovement : MonoBehaviour
             return;
         }
 
-        if (Input.GetKey(KeyCode.DownArrow) && Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.DownArrow) && Input.GetKeyDown(KeyCode.LeftAlt))
         {
             if (currentPlatformComponent != null)
             {
@@ -363,7 +363,7 @@ public class AdamMovement : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGround && !isJumping)
+        if (Input.GetKeyDown(KeyCode.LeftAlt) && isGround && !isJumping)
         {
             Debug.Log("Jumping...");
             AdamAnime.SetTrigger("Jump"); // 점프 애니메이션 실행 (한 번만)
