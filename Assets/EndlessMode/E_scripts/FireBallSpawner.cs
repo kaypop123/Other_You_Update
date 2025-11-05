@@ -13,8 +13,11 @@ public class FireBallSpawner : MonoBehaviour
 
     [Header("FireBall Settings")]
     public GameObject fireBallPrefab;  // FireBall 프리팹
+    public GameObject warning1;
+    public GameObject warning2;
 
     private Coroutine _coolTimeRoutine;
+    private Coroutine fierBallSpawn;
 
     private void OnEnable()
     {
@@ -64,6 +67,28 @@ public class FireBallSpawner : MonoBehaviour
             Debug.LogWarning("스폰 포인트가 비어 있습니다!");
             return;
         }
+        fierBallSpawn = StartCoroutine(SpawnFierBall(spawnPoint, whatSpawnPoint));
+    }
+
+    IEnumerator SpawnFierBall(Transform spawnPoint, int whatSpawnPoint)
+    {
+        if (whatSpawnPoint == 1)
+        {
+            Debug.Log("fhrm1");
+            warning1.SetActive(true);
+            yield return new WaitForSeconds(1f);
+            warning1.SetActive(false);
+
+        }
+        else
+        {
+            Debug.Log("fhrm2");
+            warning2.SetActive(true);
+            yield return new WaitForSeconds(1f);
+            warning2.SetActive(false);
+            
+        }
+        
         GameObject fb;
         fb = Instantiate(fireBallPrefab, spawnPoint.position, Quaternion.identity);
         FireBall fbScript = fb.GetComponent<FireBall>();
@@ -75,7 +100,7 @@ public class FireBallSpawner : MonoBehaviour
         {
             fbScript.isRight = false;
         }
-        
+
         Debug.Log($" FireBall Spawned at {spawnPoint.name}");
     }
 }

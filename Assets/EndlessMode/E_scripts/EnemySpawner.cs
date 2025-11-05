@@ -22,6 +22,7 @@ public class EnemySpawner : MonoBehaviour
     private Coroutine spawnRoutine;
 
     private Transform thisPos;
+    public GameObject warning;
 
     private void Start()
     {
@@ -41,8 +42,11 @@ public class EnemySpawner : MonoBehaviour
     {
         while (currentSpawned < maxSpawnCount)
         {
+            warning.SetActive(true);
+            yield return new WaitForSeconds(1f);
+            warning.SetActive(false);
             SpawnEnemy();
-            yield return new WaitForSeconds(spawnInterval);
+            yield return new WaitForSeconds(spawnInterval - 1f);
         }
     }
 
