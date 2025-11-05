@@ -19,10 +19,12 @@ public class PortalLightSwitcher : MonoBehaviour
 
     void SwitchLight(Light2D activeLight)
     {
-        // 모든 라이트 중에서 targetLight만 켜고 나머지는 끄기
+        // 모든 라이트 다 끄기
         foreach (Light2D light in allLights)
         {
-            light.gameObject.SetActive(light == activeLight);
+            light.gameObject.SetActive(false);
         }
+        // 설정 라이트 켜기
+        activeLight.gameObject.SetActive(true);
     }
 }
