@@ -61,6 +61,7 @@ public class PlayerStats : MonoBehaviour
         {
             if (HurtPlayer.Instance != null)
                 HurtPlayer.Instance.TakeDamage(100);
+            other.gameObject.SetActive(false);
         }
     }
 

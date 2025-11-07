@@ -230,6 +230,7 @@ public class DevaStats : MonoBehaviour
         {
             if (HurtDeva.Instance != null)
                 HurtDeva.Instance.TakeDamage(100);
+            other.gameObject.SetActive(false);
         }
     }
 
