@@ -7181,7 +7181,7 @@ MonoBehaviour:
   back: {fileID: 1278405090}
   loadingPanel: {fileID: 515318439}
   fakeLoadingTime: 2
-  nextSceneName: EndlessMode_New
+  nextSceneName: KeySet_E
 --- !u!4 &337015108
 Transform:
   m_ObjectHideFlags: 0
