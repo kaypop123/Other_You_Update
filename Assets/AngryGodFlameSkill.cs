@@ -109,6 +109,7 @@ public class AngryGodFlameSkill : MonoBehaviour
     private void CreateAfterImage()
     {
         GameObject afterImage = new GameObject("FlameAfterImage");
+        afterImage.tag = "AfterImage";
         SpriteRenderer sr = afterImage.AddComponent<SpriteRenderer>();
 
         sr.sprite = spriteRenderer.sprite;
@@ -130,6 +131,7 @@ public class AngryGodFlameSkill : MonoBehaviour
 
         while (elapsed < afterImageLifetime)
         {
+            if (sr == null) yield break;
             elapsed += Time.deltaTime;
             float alpha = Mathf.Lerp(originalColor.a, 0, elapsed / afterImageLifetime);
             sr.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
