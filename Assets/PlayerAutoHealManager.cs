@@ -15,7 +15,7 @@ public class PlayerAutoHealManager : MonoBehaviour
     private Coroutine adamHealCoroutine;
     private Coroutine devaHealCoroutine;
 
-    void Start()
+    void OnEnable()
     {
         StartCoroutine(CheckHealing());
         Debug.Log($"[AutoHeal] Deva active? {deva.activeInHierarchy}, currentMana: {DevaStats.Instance.currentMana}/{DevaStats.Instance.maxMana}");
@@ -48,7 +48,6 @@ public class PlayerAutoHealManager : MonoBehaviour
                 StopCoroutine(devaHealCoroutine);
                 devaHealCoroutine = null;
             }
-
             yield return new WaitForSeconds(1f);
         }
     }
@@ -104,7 +103,6 @@ public class PlayerAutoHealManager : MonoBehaviour
                     isFullyHealed = false;
                 }
             }
-
             if (isFullyHealed)
                 break;
 
