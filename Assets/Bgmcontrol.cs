@@ -128,39 +128,8 @@ public class Bgmcontrol : MonoBehaviour
                 fireAudioSource.Play();
             }
         }
-        // 던전 씬
-        else if (sceneName == "Chapter2" || sceneName == "Chapter2-1" || sceneName == "Chapter 2 Time Line")
-        {
-            if (bgmAudioSource.isPlaying) bgmAudioSource.Pause();
-            if (subAudioSource.isPlaying) subAudioSource.Stop();
-            if (TutorialAudioSource.isPlaying) TutorialAudioSource.Stop();
-            if (fightAudioSource.isPlaying) fightAudioSource.Stop();
-            if (fireAudioSource.isPlaying) fireAudioSource.Stop();
-            if (BossAudioSource.isPlaying) BossAudioSource.Stop();
-            if (EndlessAudioSource.isPlaying) EndlessAudioSource.Stop();
-            if (!DungeonAudioSource.isPlaying)
-            {
-                DungeonAudioSource.Play();
-            }
-        }
-        // 보스 전투씬
-        else if (sceneName == "FinalChapter" || sceneName == "FinalChapterHard")
-        {
-            if (bgmAudioSource.isPlaying) bgmAudioSource.Pause();
-            if (subAudioSource.isPlaying) subAudioSource.Stop();
-            if (TutorialAudioSource.isPlaying) TutorialAudioSource.Stop();
-            if (fightAudioSource.isPlaying) fightAudioSource.Stop();
-            if (fireAudioSource.isPlaying) fireAudioSource.Stop();
-            if (DungeonAudioSource.isPlaying) DungeonAudioSource.Stop();
-            if (EndlessAudioSource.isPlaying) EndlessAudioSource.Stop();
-            if (!BossAudioSource.isPlaying)
-            {
-                BossAudioSource.clip = BossBgm;
-                BossAudioSource.Play();
-            }
-        }
-        //보스연습방 브금 삭제
-        else if (sceneName == "BossAdamMeetTimeLine" || sceneName == "end" || sceneName == "BossPractice" || sceneName == "BossPracticeHard" || sceneName == "BossAdamMeetTimeLineHard")
+        // 아담 데바 만나는 타임라인
+        else if (sceneName == "Chapter 2 TimeLine")
         {
             if (bgmAudioSource.isPlaying) bgmAudioSource.Pause();
             if (subAudioSource.isPlaying) subAudioSource.Stop();
@@ -172,6 +141,40 @@ public class Bgmcontrol : MonoBehaviour
 
             if (!DungeonAudioSource.isPlaying)
             {
+                DungeonAudioSource.Play();
+            }
+        }
+        // 보스 전투씬
+        else if (sceneName == "FinalChapter")
+        {
+            if (bgmAudioSource.isPlaying) bgmAudioSource.Pause();
+            if (subAudioSource.isPlaying) subAudioSource.Stop();
+            if (TutorialAudioSource.isPlaying) TutorialAudioSource.Stop();
+            if (fightAudioSource.isPlaying) fightAudioSource.Stop();
+            if (fireAudioSource.isPlaying) fireAudioSource.Stop();
+            if (DungeonAudioSource.isPlaying) DungeonAudioSource.Stop();
+            if (EndlessAudioSource.isPlaying) EndlessAudioSource.Stop();
+
+            if (!BossAudioSource.isPlaying)
+            {
+                BossAudioSource.clip = BossBgm;
+                BossAudioSource.Play();
+            }
+        }
+        //보스연습방 브금 삭제
+        else if (sceneName == "BossAdamMeetTimeLine" || sceneName == "end" || sceneName == "BossPractice" )
+        {
+            if (bgmAudioSource.isPlaying) bgmAudioSource.Pause();
+            if (subAudioSource.isPlaying) subAudioSource.Stop();
+            if (TutorialAudioSource.isPlaying) TutorialAudioSource.Stop();
+            if (fightAudioSource.isPlaying) fightAudioSource.Stop();
+            if (fireAudioSource.isPlaying) fireAudioSource.Stop();
+            if (BossAudioSource.isPlaying) BossAudioSource.Stop();
+            if (EndlessAudioSource.isPlaying) EndlessAudioSource.Stop();
+
+            if (!DungeonAudioSource.isPlaying)
+            {
+                DungeonAudioSource.clip = DungeonBGM;
                 DungeonAudioSource.Play();
             }
         }
