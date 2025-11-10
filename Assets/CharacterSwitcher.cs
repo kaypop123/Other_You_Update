@@ -35,7 +35,7 @@ public class CharacterSwitcher : MonoBehaviour
         bool adamUsingUltimate = adamUlt != null && adamUlt.isCasting && adamObject.activeInHierarchy;
 
         // Adam 블레이드(또는 다른 스킬) 캐스팅
-        var adamCast = adamObject?.GetComponent<AdamIsCasting>(); // ? debaObject 말고 adamObject
+        var adamCast = adamObject?.GetComponent<AdamIsCasting>(); 
         bool adamUsingBlade = adamCast != null && adamCast.IsCasting && adamObject.activeInHierarchy;
 
         // Deva 궁극기 / 레이저 캐스팅
@@ -126,7 +126,7 @@ public class CharacterSwitcher : MonoBehaviour
         var debaMovement = debaObject.GetComponent<DebaraMovement>();
         if (debaMovement != null)
         {
-            debaMovement.ResetState(); // isTeleporting, attackInputRecently, velocity 등 초기화
+            debaMovement.ResetState(); 
         }
 
    
@@ -144,7 +144,7 @@ public class CharacterSwitcher : MonoBehaviour
     void DeactivateAdam()
     {
         var adamMovement = adamObject.GetComponent<AdamMovement>();
-        var ultimateSkill = adamObject.GetComponent<AdamUltimateSkill>(); // ?? 여기 추가!
+        var ultimateSkill = adamObject.GetComponent<AdamUltimateSkill>(); 
         var JumpAttack = adamObject.GetComponent<JumpAttack>();
         if (adamMovement != null)
         {
@@ -169,7 +169,7 @@ public class CharacterSwitcher : MonoBehaviour
         }
         if (ultimateSkill != null)
         {
-            ultimateSkill.CancelUltimate(); // ?? 궁극기 초기화
+            ultimateSkill.CancelUltimate();
         }
 
         adamObject.SetActive(false);
