@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Teleport : MonoBehaviour
 {
-    public GameObject targetObj; // 현텔레포트 위치
+    public GameObject targetObj; // 타겟 위치
     public GameObject toObj;     // 다음텔레포트 위치
 
     [Header("���� ���� ī�޶� ��� �ڽ�")]
@@ -22,13 +22,6 @@ public class Teleport : MonoBehaviour
         if (collision.CompareTag("Player") || collision.CompareTag("DevaPlayer"))
         {
             targetObj = collision.gameObject;
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player")||collision.CompareTag("DevaPlayer"))
-        {
             StartCoroutine(TeleportRoutine());
         }
     }
@@ -36,6 +29,8 @@ public class Teleport : MonoBehaviour
     IEnumerator TeleportRoutine()
     {
         yield return null;
+
+
 
         // 1. 플레이어 이동
         targetObj.transform.position = toObj.transform.position;
