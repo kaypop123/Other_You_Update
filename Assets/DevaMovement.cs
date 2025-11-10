@@ -9,8 +9,8 @@ public class DebaraMovement : MonoBehaviour
 
     public float JumpPower = 3f;
     public float MoveSpeed = 3f;
-    private MagicAttack magicAttack; // ���� ���� ��ũ��Ʈ ����
-    private DevaEnergyBarUI DevaEnergyBarUI; // ������ UI �߰�
+    private MagicAttack magicAttack; 
+    private DevaEnergyBarUI DevaEnergyBarUI; 
 
     private bool canTeleport = true;
     private bool isTeleporting;
@@ -26,7 +26,7 @@ public class DebaraMovement : MonoBehaviour
 
     public bool lastKeyWasRight = true;
 
-    // ���� ����
+
     public bool isGround;
     public Transform JumpPos;
     public float checkRadiusJump;
@@ -34,9 +34,9 @@ public class DebaraMovement : MonoBehaviour
 
     public bool isAttacking = false;
     public bool isInvincible { get; private set; }
-    [SerializeField] private Transform jumpAttackCheckPos; // Ray ���� ����
-    [SerializeField] private float jumpAttackRayLength = 1.5f; // ���� ����
-    [SerializeField] private LayerMask jumpAttackBlockLayer; // ������ ���̾�
+    [SerializeField] private Transform jumpAttackCheckPos; 
+    [SerializeField] private float jumpAttackRayLength = 1.5f; 
+    [SerializeField] private LayerMask jumpAttackBlockLayer; 
     private Vector2? pendingTeleportTarget = null;
     public bool isControllable = true;
 
@@ -49,7 +49,7 @@ public class DebaraMovement : MonoBehaviour
         DebaraAnime = GetComponent<Animator>();
         DebaraSprite = GetComponent<SpriteRenderer>();
         magicAttack = GetComponent<MagicAttack>();
-        DevaEnergyBarUI = FindObjectOfType<DevaEnergyBarUI>(); // EnergyBarUI ã��
+        DevaEnergyBarUI = FindObjectOfType<DevaEnergyBarUI>(); // EnergyBarUI 
     }
 
     void Update()
@@ -59,7 +59,7 @@ public class DebaraMovement : MonoBehaviour
 
         bool isInAttackAnimation = currentState.IsName("Cast1") || currentState.IsName("Cast2");
 
-        if (isInAttackAnimation && isAttacking) // �� ��¥ ���� ���� ���� ����
+        if (isInAttackAnimation && isAttacking) 
         {
             StopMovement();
             return;
@@ -98,7 +98,7 @@ public class DebaraMovement : MonoBehaviour
 
     void HandleMovement()
     {
-        if (isAttacking) return; //  ���� �߿��� �̵� �Ұ�
+        if (isAttacking) return; 
 
         float hor = Input.GetAxisRaw("Horizontal");
 
@@ -143,12 +143,11 @@ public class DebaraMovement : MonoBehaviour
                     }
 
                     DebaraAnime.Play("JumpAttack", 0, 0);
-                    // ���� ���� �� StopMovement ȣ�� X
                 }
                 else
                 {
                     DebaraAnime.Play("Attack", 0, 0);
-                    StopMovement(); // ���󿡼��� ������ ���ߵ��� ����
+                    StopMovement(); 
                 }
             }
         }
@@ -158,7 +157,7 @@ public class DebaraMovement : MonoBehaviour
 
     public void EndAttack()
     {
-        isAttacking = false; // ���� ���� ����
+        isAttacking = false; 
     }
     void HandleTeleport()
     {
@@ -171,21 +170,21 @@ public class DebaraMovement : MonoBehaviour
         {
             float currentEnergy = DevaEnergyBarUI != null ? DevaEnergyBarUI.GetCurrentEnergy() : 0f;
 
-            // ?? ������ ���� �� �ڷ���Ʈ �Ұ� ó��
+
             if (currentEnergy < teleportEnergyCost && DevaEnergyBarUI != null)
             {
                 Debug.Log("�ڷ���Ʈ �Ұ�: ENERGY ����!");
-                DevaEnergyBarUI.FlashBorder(); // UI ������ ȿ��
+                DevaEnergyBarUI.FlashBorder(); 
                 return;
             }
 
-            StartCoroutine(Teleport()); // �ڷ���Ʈ ����
+            StartCoroutine(Teleport());
         }
     }
-    public GameObject teleportStartEffectPrefab; // ��� ����Ʈ ������
-    public GameObject teleportEndEffectPrefab; // ���� ����Ʈ ������
-    public Transform teleportStartEffectPosition; // ��� ����Ʈ ��ġ ������ �� ������Ʈ
-    public Transform teleportEndEffectPosition; // ���� ����Ʈ ��ġ ������ �� ������Ʈ
+    public GameObject teleportStartEffectPrefab; 
+    public GameObject teleportEndEffectPrefab; 
+    public Transform teleportStartEffectPosition; 
+    public Transform teleportEndEffectPosition;
 
     private IEnumerator Teleport()
     {
@@ -205,14 +204,14 @@ public class DebaraMovement : MonoBehaviour
         Vector2 direction = new Vector2(teleportDirection, 0);
         float distance = teleportDistance;
 
-        // Ray ���� ��ġ: ĳ���� �߽ɿ��� ���� + ������ ��¦ �̵�
+
         Vector2 origin = (Vector2)transform.position + new Vector2(0, 0.5f) + direction * 0.3f;
         RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, isLayer);
 
-        // ����� �� ǥ��
+
         Debug.DrawRay(origin, direction * distance, Color.red, 1f);
 
-        // ����� �ð�ȭ
+
 
 
         Vector2 targetPosition;
@@ -221,29 +220,29 @@ public class DebaraMovement : MonoBehaviour
         {
             float safeDistance = Mathf.Max(0f, hit.distance - 0.05f);
             targetPosition = (Vector2)transform.position + direction * safeDistance;
-            Debug.Log($"[����] �� ������: {hit.collider.name} | �Ÿ�: {hit.distance:F2} �� �̵��Ÿ�: {safeDistance:F2}");
+           
         }
         else
         {
             targetPosition = (Vector2)transform.position + direction * distance;
-            Debug.Log($"[����] �� ���� �� ��ü �Ÿ� �̵�: {distance:F2}");
+
         }
 
         pendingTeleportTarget = targetPosition;
 
-        // ��� ����Ʈ
+    
         if (teleportStartEffectPrefab != null && teleportStartEffectPosition != null)
         {
             GameObject startEffect = Instantiate(teleportStartEffectPrefab, teleportStartEffectPosition.position, Quaternion.identity);
             Destroy(startEffect, 0.3f);
         }
 
-        yield return new WaitForSeconds(0.2f); // �ڷ���Ʈ ������
+        yield return new WaitForSeconds(0.2f);
 
         transform.position = targetPosition;
         pendingTeleportTarget = null;
 
-        // ���� ����Ʈ
+
         if (teleportEndEffectPrefab != null && teleportEndEffectPosition != null)
         {
             GameObject endEffect = Instantiate(teleportEndEffectPrefab, teleportEndEffectPosition.position, Quaternion.identity);
@@ -284,7 +283,7 @@ public class DebaraMovement : MonoBehaviour
 
     void HandleFlip()
     {
-        if (isAttacking) return; // ���� �߿��� ���� ��ȯ ����
+        if (isAttacking) return; 
 
         float hor = Input.GetAxisRaw("Horizontal");
         if (hor != 0)
@@ -299,13 +298,13 @@ public class DebaraMovement : MonoBehaviour
         AnimatorStateInfo currentState = DebaraAnime.GetCurrentAnimatorStateInfo(0);
         bool isJumping = currentState.IsName("Jump");
 
-        //  ���� ���̸� ���� ����
+
         if (isAttacking)
         {
             return;
         }
 
-        //  �Ϲ� ���� �߿��� ���� ����
+
         if (currentState.IsName("Attack"))
         {
             return;
@@ -406,7 +405,7 @@ public class DebaraMovement : MonoBehaviour
             DebaraAnime.SetBool("Fall", false);
         }
 
-        // ������ ����
+
         if (DebaraRigidbody != null)
         {
             DebaraRigidbody.velocity = Vector2.zero;
@@ -420,7 +419,7 @@ public class DebaraMovement : MonoBehaviour
         if (DebaraAnime != null && gameObject.activeInHierarchy)
         {
             DebaraAnime.ResetTrigger("Attack");
-            DebaraAnime.Play("DevaIdle"); // �� Ȱ��ȭ ������ ���� ����
+            DebaraAnime.Play("DevaIdle"); 
         }
 
         if (magicAttack != null)
@@ -441,7 +440,7 @@ public class DebaraMovement : MonoBehaviour
                 teleportTrail.emitting = false;
             }
 
-            // ��ġ ����
+
             if (pendingTeleportTarget.HasValue)
             {
                 transform.position = pendingTeleportTarget.Value;
@@ -452,19 +451,19 @@ public class DebaraMovement : MonoBehaviour
         }
     }
     [SerializeField] private GameObject laserPrefab;
-    [SerializeField] private Transform laserSpawnOrigin; // ���� ��ġ (Deva ����)
+    [SerializeField] private Transform laserSpawnOrigin; 
 
-    [SerializeField] private int laserCount = 6; // �� �� ��ȯ���� (��: 6��)
-    [SerializeField] private float interval = 0.1f; // ��ȯ ����
-    [SerializeField] private float spawnDistanceStep = 0.5f; // �� ��ȯ���� �������� �󸶳� �̵�����
+    [SerializeField] private int laserCount = 6; 
+    [SerializeField] private float interval = 0.1f; 
+    [SerializeField] private float spawnDistanceStep = 0.5f; 
 
-    [SerializeField] private float laserManaCost = 40f; // ������ ��ų ���� �Ҹ�
+    [SerializeField] private float laserManaCost = 40f; 
 
-    [Header("UI ����")]
-    public SkillCooldownUI laserCooldownUI; // ������ ��ų ��Ÿ�� UI ����
+    [Header("UI")]
+    public SkillCooldownUI laserCooldownUI; 
 
-    [Header("��Ÿ�� ����")]
-    public float laserCooldown = 6f; // ������ ��ų ��Ÿ�� �ð�
+
+    public float laserCooldown = 6f; 
     private bool isLaserOnCooldown = false;
     private float laserCooldownEndTime = 0f;
 
@@ -472,37 +471,34 @@ public class DebaraMovement : MonoBehaviour
 
     public void CastLaserSkill()
     {
-        // ? ��Ÿ�� üũ�� Time.time ����
+        
         if (Time.time < laserCooldownEndTime)
         {
-            Debug.Log("������ ��ų ��Ÿ�� ��");
             return;
         }
 
         if (!isGround)
         {
-            Debug.Log("���߿����� ��ų ��� �Ұ�");
             return;
         }
 
         if (!DevaStats.Instance.HasEnoughMana((int)laserManaCost))
         {
-            Debug.Log("���� ����!");
             if (DevaManaBarUI.Instance != null)
                 DevaManaBarUI.Instance.FlashBorder();
             return;
         }
 
-        // ���� ����
+
         DevaStats.Instance.ReduceMana((int)laserManaCost);
 
-        // ��Ÿ�� ���� (�ð� ����)
+
         laserCooldownEndTime = Time.time + laserCooldown;
 
         if (laserCooldownUI != null)
         {
             laserCooldownUI.cooldownTime = laserCooldown;
-            laserCooldownUI.StartCooldown(); // �������
+            laserCooldownUI.StartCooldown(); 
         }
 
         DebaraAnime.Play("Cast1");
@@ -529,17 +525,17 @@ public class DebaraMovement : MonoBehaviour
 
             if (DebaraSprite.flipX)
             {
-                // ��������Ʈ ����
+
                 Vector3 scale = laser.transform.localScale;
                 scale.x = Mathf.Abs(scale.x) * -1f;
                 laser.transform.localScale = scale;
 
-                // ��ü ������Ʈ ���� (ȸ��)
+
                 laser.transform.rotation = Quaternion.Euler(0, 180f, 0);
             }
             else
             {
-                // �������� ���� �⺻ ����
+
                 Vector3 scale = laser.transform.localScale;
                 scale.x = Mathf.Abs(scale.x);
                 laser.transform.localScale = scale;
@@ -565,12 +561,12 @@ public class DebaraMovement : MonoBehaviour
     {
         isLaserOnCooldown = false;
         isAttacking = false;
-        StopAllCoroutines(); // ������ �ڷ�ƾ ����
+        StopAllCoroutines(); 
 
         if (laserCooldownUI != null)
         {
-            // FillAmount ��� �ʱ�ȭ
-            laserCooldownUI.cooldownTime = 0f;
+            laserCooldownUI.cooldownTime = laserCooldown; 
+            laserCooldownUI.StartCooldown();
         }
 
         if (DebaraAnime != null && gameObject.activeInHierarchy)
@@ -579,9 +575,8 @@ public class DebaraMovement : MonoBehaviour
             DebaraAnime.Play("DevaIdle");
         }
 
-        Debug.Log("Deba ������ ��ų ���� �ʱ�ȭ �Ϸ�");
     }
-    [SerializeField] private DevaBigLaserSkill bigLaserSkill; // �ν����� ����
+    [SerializeField] private DevaBigLaserSkill bigLaserSkill;
     public void StartisInvincible()
     {
                isInvincible = true;
