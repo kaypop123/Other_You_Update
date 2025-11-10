@@ -29,7 +29,7 @@ public class FireBall : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(vx * Time.fixedDeltaTime);
+        transform.Translate(vx * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
