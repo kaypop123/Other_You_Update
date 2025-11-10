@@ -586,6 +586,7 @@ public class AngryGodAiCore : MonoBehaviour
     void CreateAfterImage()
     {
         GameObject afterImage = new GameObject("AfterImage_Boss");
+        afterImage.tag = "AfterImage";
         SpriteRenderer sr = afterImage.AddComponent<SpriteRenderer>();
         sr.sprite = spriteRenderer.sprite;
         sr.color = new Color(1f, 0.2f, 0.2f, 0.7f);
