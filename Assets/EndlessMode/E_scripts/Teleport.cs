@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Teleport : MonoBehaviour
 {
     public GameObject targetObj; // 타겟 위치
     public GameObject toObj;     // 다음텔레포트 위치
 
-    [Header("���� ���� ī�޶� ��� �ڽ�")]
     public BoxCollider2D nextMapBound;   // �߰���
     // [추가] 스테이지 리셋 관련 변수
     public EnemySpawner targetSpawner;   // 초기화할 스포너
@@ -15,14 +15,25 @@ public class Teleport : MonoBehaviour
     public SpawnTrigger targetTrigger;   // 초기화할 트리거
     public FireBallSpawner d_fireballSpawner;   // 비활성화할 오브젝트
     public FireBallSpawner s_fireballSpawner;   // 활성화할 오브젝트
+    private BoxCollider2D BC;
+    public bool auto = false;
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") || collision.CompareTag("DevaPlayer"))
+        
+
+        if (collision.CompareTag("Player") || collision.CompareTag("DevaPlayer") )
         {
+            BC = GetComponent<BoxCollider2D>();
+            Vector2 s = BC.size;
+            s.x = 100f;          // 바꾸고 싶은 값
+            BC.size = s;
+
             targetObj = collision.gameObject;
+
             StartCoroutine(TeleportRoutine());
+            StartCoroutine(TeleportDelete());
         }
     }
 
@@ -42,7 +53,7 @@ public class Teleport : MonoBehaviour
         }
 
         // 3. 포탈 비활성화
-        gameObject.SetActive(false);
+        
 
         // 4. 파이어볼 스포너
         if (d_fireballSpawner != null)
@@ -80,6 +91,28 @@ public class Teleport : MonoBehaviour
 
             Debug.Log("포탈 이동 후 스테이지 초기화 완료!");
         }
+    }
+
+    IEnumerator TeleportDelete()
+    {
+        if (!auto)
+        {
+            BC = GetComponent<BoxCollider2D>();
+            Vector2 s = BC.size;
+            s.x = 100f;
+            BC.size = s;
+        }
+        
+        yield return new WaitForSeconds(2f);
+
+        if (!auto)
+        {
+            BC = GetComponent<BoxCollider2D>();
+            Vector2 s = BC.size;
+            s.x = 0.3f;
+            BC.size = s;
+        }
+        gameObject.SetActive(false);
     }
 }
 
