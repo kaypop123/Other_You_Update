@@ -224,6 +224,7 @@ public class AngryGodActiveSkill1 : MonoBehaviour
     private void CreateAfterImage()
     {
         GameObject afterImage = new GameObject("AfterImage_Skill1");
+        afterImage.tag = "AfterImage";
         SpriteRenderer sr = afterImage.AddComponent<SpriteRenderer>();
         SpriteRenderer original = GetComponent<SpriteRenderer>();
 
@@ -246,6 +247,7 @@ public class AngryGodActiveSkill1 : MonoBehaviour
 
         while (elapsed < duration)
         {
+            if (sr == null) yield break;
             elapsed += Time.deltaTime;
             float alpha = Mathf.Lerp(startColor.a, 0, elapsed / duration);
             sr.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
