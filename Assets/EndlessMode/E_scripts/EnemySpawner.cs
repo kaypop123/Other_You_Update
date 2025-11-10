@@ -127,26 +127,22 @@ public class EnemySpawner : MonoBehaviour
     }
 
     // [추가] 스테이지 초기화용 함수
-public void ResetSpawner()
-{
-    // 현재 스테이지의 적들을 전부 제거
-    foreach (Transform child in transform)
+    public void ResetSpawner()
     {
-        if (child.CompareTag("Enemy"))
-            Destroy(child.gameObject);
+        // 현재 스테이지의 적들을 전부 제거
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("Enemy"))
+                Destroy(child.gameObject);
+        }
+
+        // 스폰 관련 변수 초기화
+        currentSpawned = 0;
+        deadCount = 0;
+        spawning = false;
+
+        Debug.Log($"[{gameObject.name}] 스테이지 초기화 완료");
     }
-
-    // 스폰 관련 변수 초기화
-    currentSpawned = 0;
-    deadCount = 0;
-    spawning = false;
-
-    // 포탈 비활성화 (다시 클리어해야 열리도록)
-    if (portalPrefab != null)
-        portalPrefab.SetActive(false);
-
-    Debug.Log($"[{gameObject.name}] 스테이지 초기화 완료");
-}
 
 }
 
