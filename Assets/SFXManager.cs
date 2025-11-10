@@ -40,22 +40,23 @@ public enum SFXType
 public class SFXEntry
 {
     public SFXType type;
-    public AudioSource Source; // AudioClip이 아닌 AudioSource
+    public AudioSource Source;
 }
 
 public class SFXManager : MonoBehaviour
 {
     public static SFXManager Instance { get; private set; }
 
-    [SerializeField] private List<SFXEntry> sfxEntries;
+    [SerializeField] private List<SFXEntry> sfxEntries = new List<SFXEntry>();
     [SerializeField] private int poolSize = 5;
-    [SerializeField] private float volume = 1f;
+    [Range(0f, 1f)] public float volume = 1f;
 
-    [SerializeField] private UnityEngine.Audio.AudioMixerGroup sfxMixerGroup; // ✅ 오디오 믹서 그룹
+    [SerializeField] private UnityEngine.Audio.AudioMixerGroup sfxMixerGroup;
 
     private Dictionary<SFXType, AudioSource> sfxDict;
     private AudioSource[] audioPool;
     private int currentIndex = 0;
+    private const string SFX_VOLUME_KEY = "SfxVolume";
 
     private void Awake()
     {
@@ -63,6 +64,8 @@ public class SFXManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            volume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 1f);
             InitSFXDict();
             InitAudioPool();
         }
@@ -72,26 +75,12 @@ public class SFXManager : MonoBehaviour
         }
     }
 
-#if UNITY_EDITOR
-    [ContextMenu("자동으로 SFX 항목 채우기")]
-    private void AutoFillSFXEntries()
-    {
-        foreach (SFXType type in System.Enum.GetValues(typeof(SFXType)))
-        {
-            if (!sfxEntries.Exists(e => e.type == type))
-            {
-                sfxEntries.Add(new SFXEntry { type = type });
-            }
-        }
-    }
-#endif
-
     private void InitSFXDict()
     {
         sfxDict = new Dictionary<SFXType, AudioSource>();
         foreach (var entry in sfxEntries)
         {
-            if (!sfxDict.ContainsKey(entry.type))
+            if (entry.Source != null && !sfxDict.ContainsKey(entry.type))
                 sfxDict[entry.type] = entry.Source;
         }
     }
@@ -101,56 +90,49 @@ public class SFXManager : MonoBehaviour
         audioPool = new AudioSource[poolSize];
         for (int i = 0; i < poolSize; i++)
         {
-            GameObject sourceObj = new GameObject("SFXAudio_" + i);
-            sourceObj.transform.SetParent(this.transform);
-            AudioSource source = sourceObj.AddComponent<AudioSource>();
+            GameObject obj = new GameObject("SFX_Audio_" + i);
+            obj.transform.SetParent(transform);
+            AudioSource source = obj.AddComponent<AudioSource>();
             source.playOnAwake = false;
-            source.volume = volume;
-
-            // ✅ 오디오 믹서 그룹 연결
             source.outputAudioMixerGroup = sfxMixerGroup;
-
+            source.volume = volume;
             audioPool[i] = source;
         }
     }
 
     public void Play(SFXType type)
     {
-        if (sfxDict.TryGetValue(type, out AudioSource sourceClip))
+        if (!sfxDict.TryGetValue(type, out AudioSource src) || src == null || src.clip == null)
         {
-            if (sourceClip.clip == null)
-            {
-                Debug.LogWarning($"SFXType {type} has no assigned AudioClip.");
-                return;
-            }
-
-            // Death 사운드가 재생될 경우 모든 BGM 정지
-            if (type == SFXType.Death)
-            {
-                StopAllBGMs();
-            }
-
-            AudioSource pooledSource = audioPool[currentIndex];
-            pooledSource.clip = sourceClip.clip;
-            pooledSource.volume = sourceClip.volume;
-            pooledSource.pitch = sourceClip.pitch;
-            pooledSource.loop = false; // SFX는 기본적으로 반복하지 않음
-            pooledSource.Play();
-
-            currentIndex = (currentIndex + 1) % poolSize;
+            Debug.LogWarning($"[SFXManager] Missing AudioClip for {type}");
+            return;
         }
-        else
-        {
-            Debug.LogWarning($"SFXType {type} not found in SFXManager.");
-        }
+
+        AudioSource pooled = audioPool[currentIndex];
+        pooled.clip = src.clip;
+        pooled.pitch = src.pitch;
+        pooled.volume = src.volume * volume; // 전역 볼륨 * 개별 볼륨
+        pooled.loop = false;
+        pooled.Play();
+
+        currentIndex = (currentIndex + 1) % poolSize;
+
+        if (type == SFXType.Death)
+            StopAllBGMs();
     }
 
-    // Death SFX 시 모든 BGM 정지용 함수
+    public void SetVolume(float value)
+    {
+        volume = Mathf.Clamp01(value);
+        PlayerPrefs.SetFloat(SFX_VOLUME_KEY, volume);
+        PlayerPrefs.Save();
+    }
+
     private void StopAllBGMs()
     {
         if (Bgmcontrol.Instance == null) return;
 
-        AudioSource[] allBGMs = new AudioSource[]
+        AudioSource[] bgms = new AudioSource[]
         {
             Bgmcontrol.Instance.bgmAudioSource,
             Bgmcontrol.Instance.subAudioSource,
@@ -161,12 +143,10 @@ public class SFXManager : MonoBehaviour
             Bgmcontrol.Instance.BossAudioSource
         };
 
-        foreach (AudioSource bgm in allBGMs)
+        foreach (var b in bgms)
         {
-            if (bgm != null && bgm.isPlaying)
-            {
-                bgm.Stop(); // 또는 .Pause()로 일시정지도 가능
-            }
+            if (b != null && b.isPlaying)
+                b.Stop();
         }
     }
 }
