@@ -326,7 +326,7 @@ public class DebaraMovement : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftAlt) && isGround && !isJumping)
+        if ((Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.UpArrow)) && isGround && !isJumping)
         {
             Debug.Log("Jumping...");
             DebaraRigidbody.velocity = new Vector2(DebaraRigidbody.velocity.x, JumpPower);
