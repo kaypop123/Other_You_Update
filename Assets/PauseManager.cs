@@ -9,7 +9,24 @@ public class PauseManager : MonoBehaviour
 
     void Update()
     {
-        if ((startCanvas != null && !startCanvas.activeSelf && Input.GetKeyDown(KeyCode.Escape)))
+ 
+        if ( Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+                ResumeGame();
+            else
+                PauseGame();
+        }
+       
+    }
+
+    void Start()
+    {
+        ELModPause();
+    }
+    private void ELModPause()
+    {
+        if (startCanvas != null && !startCanvas.activeSelf)
         {
             if (isPaused)
                 ResumeGame();

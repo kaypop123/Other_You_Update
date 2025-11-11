@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class DebaraMovement : MonoBehaviour
 {
     Rigidbody2D DebaraRigidbody;
@@ -325,11 +325,28 @@ public class DebaraMovement : MonoBehaviour
             }
         }
 
-        if ((Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.UpArrow)) && isGround && !isJumping)
+        if (Input.GetKeyDown(KeyCode.LeftAlt) && isGround && !isJumping)
         {
             Debug.Log("Jumping...");
             DebaraRigidbody.velocity = new Vector2(DebaraRigidbody.velocity.x, JumpPower);
         }
+
+        else if (IsEndlessModeScene())
+        {
+            if ((Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.UpArrow)) && isGround && !isJumping)
+            {
+                Debug.Log("Jumping...");
+                DebaraRigidbody.velocity = new Vector2(DebaraRigidbody.velocity.x, JumpPower);
+            }
+        }
+
+    }
+
+
+    private bool IsEndlessModeScene()
+    {
+        // 씬 이름 정확히 "EndlessMode"로 맞춰줘
+        return SceneManager.GetActiveScene().name == "EndlessMode_New";
     }
     void FollowPlatform()
     {

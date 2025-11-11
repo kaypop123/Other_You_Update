@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 public class AdamMovement : MonoBehaviour
 {
@@ -363,13 +363,30 @@ public class AdamMovement : MonoBehaviour
             }
         }
 
-        if ((Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.UpArrow)) && isGround && !isJumping)
+        if ((Input.GetKeyDown(KeyCode.LeftAlt)) && isGround && !isJumping)
         {
             Debug.Log("Jumping...");
             AdamAnime.SetTrigger("Jump"); // 점프 애니메이션 실행 (한 번만)
             AdamRigidebody.velocity = new Vector2(AdamRigidebody.velocity.x, JumpPower);
         }
+
+        else if (IsEndlessModeScene())
+        {
+            if ((Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.UpArrow)) && isGround && !isJumping)
+            {
+                Debug.Log("Jumping...");
+                AdamAnime.SetTrigger("Jump"); // 점프 애니메이션 실행 (한 번만)
+                AdamRigidebody.velocity = new Vector2(AdamRigidebody.velocity.x, JumpPower);
+            }
+        }
     }
+
+    private bool IsEndlessModeScene()
+    {
+        // 씬 이름 정확히 "EndlessMode"로 맞춰줘
+        return SceneManager.GetActiveScene().name == "EndlessMode_New";
+    }
+
 
     void FollowPlatform()
     {
