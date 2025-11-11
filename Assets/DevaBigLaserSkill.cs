@@ -37,6 +37,12 @@ public class DevaBigLaserSkill : MonoBehaviour
 
     public void TryCastLaser()
     {
+        if (devaMovement != null && devaMovement.isAttacking)
+        {
+            Debug.Log("X 스킬 사용 중이라 C 빅 레이저를 사용할 수 없습니다.");
+            return;
+        }
+
         if (Time.time < cooldownEndTime)
         {
             Debug.Log(" 쿨타임 중");

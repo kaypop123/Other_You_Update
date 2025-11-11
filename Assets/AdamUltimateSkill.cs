@@ -23,6 +23,11 @@ public class AdamUltimateSkill : MonoBehaviour
 
     void Update()
     {
+
+        if (adamMovement != null && adamMovement.bladeSkill != null && adamMovement.bladeSkill.isSlashing)
+        {
+            return;
+        }
         if (Input.GetKeyDown(ultimateKey) && !isCasting)
         {
             // 쿨타임 체크

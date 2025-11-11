@@ -180,7 +180,16 @@ public class BossHurt : MonoBehaviour
         if (isDying) yield break;
         isDying = true;
         bossAnimator.SetTrigger("Die");
-        StageManager.Instance.currentTime += 5;
+
+        
+        if (StageManager.Instance != null)
+            {
+                StageManager.Instance.currentTime += 5;
+            }
+            else
+            {
+                Debug.LogWarning("StageManager.Instance가 없어 시간을 추가할 수 없습니다.");
+            }
 
         if (ScoreManager.instance != null)
         {
