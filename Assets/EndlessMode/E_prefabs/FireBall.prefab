@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7777505963327304252}
   m_Layer: 15
   m_Name: FireBall
-  m_TagString: FireBall
+  m_TagString: EnemyAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,6 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 6
   isRight: 0
+  damage: 100
 --- !u!95 &2923381682897595188
 Animator:
   serializedVersion: 5

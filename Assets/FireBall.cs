@@ -9,11 +9,13 @@ public class FireBall : MonoBehaviour
     private Vector2 vx;
     public bool isRight;
     private SpriteRenderer sr;
-
+    public int damage;
+    private BoxCollider2D bc;
 
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
+        bc = GetComponent<BoxCollider2D>();
 
         if (isRight)
         {
@@ -23,6 +25,10 @@ public class FireBall : MonoBehaviour
         {
             vx = Vector2.left * speed;
             sr.flipX = true;
+
+            Vector2 a = bc.offset;
+            a.x = a.x * -1f;
+            bc.offset = a;
         }
         
     }
@@ -34,10 +40,22 @@ public class FireBall : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Ground"))
+        if (collision.CompareTag("FireWall") || collision.CompareTag("Player") || collision.CompareTag("DevaPlayer"))
         {
             Destroy(gameObject);
         }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("FireWall") || collision.CompareTag("Player") || collision.CompareTag("DevaPlayer"))
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public int GetDamage()
+    {
+        return damage; // 공격 데미지 반환
     }
 }
 

@@ -30,6 +30,7 @@ TagManager:
   - FireBall
   - Terrain
   - SpawnPoint
+  - FireWall
   layers:
   - Default
   - TransparentFX
