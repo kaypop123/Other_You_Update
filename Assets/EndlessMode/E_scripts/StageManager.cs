@@ -41,6 +41,7 @@ public class StageManager : MonoBehaviour
         UpdateStageDisplay(); // 스테이지 올라갈 때 즉시 갱신
         StartCoroutine(ShowStageText());
         currentTime += time;
+        stageTimeText.text = $"Time : {currentTime}초";
     }
 
     private IEnumerator Time()
