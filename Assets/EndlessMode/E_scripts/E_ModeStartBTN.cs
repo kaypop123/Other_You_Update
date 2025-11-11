@@ -7,6 +7,7 @@ public class E_ModeStartBTN : MonoBehaviour
 {
     [SerializeField] private TMP_InputField nameInputField;  // 이름 입력창
     [SerializeField] private GameObject nameCanvas;          // 캔버스 전체 오브젝트
+    [SerializeField] private GameObject tip;          // 키 가이드
     private const string PlayerNameKey = "PlayerName";
     public GameObject player;
 
@@ -14,6 +15,11 @@ public class E_ModeStartBTN : MonoBehaviour
     {
         Time.timeScale = 0f;
         player.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        tip.SetActive(false);
     }
 
     public void StartButtonClick()
@@ -33,5 +39,8 @@ public class E_ModeStartBTN : MonoBehaviour
         Time.timeScale = 1f;
         player.SetActive(true);
         nameCanvas.SetActive(false);
+
+        // 팁 입력 확성화
+        tip.SetActive(true);
     }
 }
