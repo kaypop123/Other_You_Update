@@ -158,11 +158,16 @@ public class HurtPlayer : MonoBehaviour
                 damageTrigger.TriggerDamageCooldown(0.5f);
             }
 
+            FireBall fire = other.GetComponentInParent<FireBall>();
             //  근거리 적 공격인지 확인 후 대미지 적용
             int damage = 0;
             if (enemy != null)
             {
                 damage = enemy.GetDamage(); // 적이 주는 대미지를 가져옴
+            }
+            else if (fire != null)
+            {
+                damage = fire.GetDamage(); // 적이 주는 대미지를 가져옴
             }
             //  원거리 공격(화살)인지 확인 후 대미지 적용
             else if (enemyArrow != null)

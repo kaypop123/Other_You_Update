@@ -97,6 +97,9 @@ public class HurtDeva : MonoBehaviour
         if (isParrying || isDead) return;
 
         EnemyMovement enemy = other.GetComponentInParent<EnemyMovement>();
+       
+        FireBall fire = other.GetComponentInParent<FireBall>();
+
         Arrow arrow = other.GetComponent<Arrow>();
 
         if (other.CompareTag("EnemyAttack") || other.CompareTag("damageAmount"))
@@ -109,6 +112,7 @@ public class HurtDeva : MonoBehaviour
 
             int damage = 0;
             if (enemy != null) damage = enemy.GetDamage();
+            else if (fire != null) damage = fire.GetDamage();
             else if (arrow != null) damage = arrow.damage;
 
             TakeDamage(damage);

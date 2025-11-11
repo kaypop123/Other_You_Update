@@ -9,7 +9,11 @@ public class StageManager : MonoBehaviour
 
     public TextMeshProUGUI stageText; // 스테이지 넘어갈 때마다 띄울 거
     public TextMeshProUGUI stageDisplayText; // 상시로 띄울 스테이지
+    public TextMeshProUGUI stageTimeText; // 스테이지 남은 시간
     public CanvasGroup stageBackground; // 반투명 배경용 CanvasGroup
+    public int time;
+    public GameObject death;
+    public int currentTime;
 
     static public int currentStage = 1;
 
@@ -17,6 +21,7 @@ public class StageManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+        currentTime = time;
     }
 
     private void Start()
@@ -26,6 +31,8 @@ public class StageManager : MonoBehaviour
         UpdateStageDisplay(); // 게임 시작 시 우측 상단에 표시
 
         StartCoroutine(ShowInitialStage());
+        StartCoroutine(Time());
+
     }
 
     public void IncreaseStageAndShow()
@@ -33,6 +40,19 @@ public class StageManager : MonoBehaviour
         currentStage++;
         UpdateStageDisplay(); // 스테이지 올라갈 때 즉시 갱신
         StartCoroutine(ShowStageText());
+        currentTime += time;
+    }
+
+    private IEnumerator Time()
+    {
+        stageTimeText.text = $"Time : {currentTime}초";
+        while (currentTime > 0)
+        {
+            yield return new WaitForSeconds(1f);
+            currentTime--;
+            stageTimeText.text = $"Time : {currentTime}초";
+        }
+        death.SetActive(true);
     }
 
     private IEnumerator ShowInitialStage()
