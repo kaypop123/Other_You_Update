@@ -173,7 +173,7 @@ public class HurtDeva : MonoBehaviour
         if (rb == null) return;
 
         float direction = transform.position.x - enemyTransform.position.x > 0 ? 1f : -1f;
-        rb.velocity = new Vector2(knockbackForce * direction, rb.velocity.y + 1f);
+ 
     }
 
     private void Die()
