@@ -583,7 +583,6 @@ public class DebaraMovement : MonoBehaviour
         if (laserCooldownUI != null)
         {
             laserCooldownUI.cooldownTime = laserCooldown; 
-            laserCooldownUI.StartCooldown();
         }
 
         if (DebaraAnime != null && gameObject.activeInHierarchy)
