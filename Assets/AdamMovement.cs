@@ -76,7 +76,7 @@ public class AdamMovement : MonoBehaviour
             StopMovement();
             return;
         }
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.X) && isGround)
         {
             if (bladeSkill != null)
                 bladeSkill.StartBladeSlash();
