@@ -37,7 +37,7 @@ public class DevaBigLaserSkill : MonoBehaviour
 
     public void TryCastLaser()
     {
-        if (devaMovement != null && devaMovement.isAttacking)
+        if (devaMovement != null && (devaMovement.isAttacking || devaMovement.IsTeleporting))
         {
             Debug.Log("X 스킬 사용 중이라 C 빅 레이저를 사용할 수 없습니다.");
             return;
