@@ -30,27 +30,29 @@ public class CharacterSwitcher : MonoBehaviour
         bool isAdamDead = HurtPlayer.Instance != null && HurtPlayer.Instance.IsDead();
         bool isDebaDead = HurtDeva.Instance != null && HurtDeva.Instance.IsDead();
 
-        // Adam 궁극기
         var adamUlt = adamObject?.GetComponent<AdamUltimateSkill>();
         bool adamUsingUltimate = adamUlt != null && adamUlt.isCasting && adamObject.activeInHierarchy;
 
-        // Adam 블레이드(또는 다른 스킬) 캐스팅
-        var adamCast = adamObject?.GetComponent<AdamIsCasting>(); 
+        var adamCast = adamObject?.GetComponent<AdamIsCasting>();
         bool adamUsingBlade = adamCast != null && adamCast.IsCasting && adamObject.activeInHierarchy;
 
-        // Deva 궁극기 / 레이저 캐스팅
         var devaCast = debaObject?.GetComponent<DevaCastingBool>();
         bool devaUsingUltimate = devaCast != null && devaCast.IsCasting && debaObject.activeInHierarchy;
 
-        //  셋 중 하나라도 캐스팅 중이면 스위치 금지
-        if (adamUsingUltimate || devaUsingUltimate || adamUsingBlade)
-            return;
-
         if (Input.GetKeyDown(KeyCode.Tab) && canSwitch && !isAdamDead && !isDebaDead)
         {
+            // 이때 캐스팅 중이면 막기
+            if (adamUsingUltimate || devaUsingUltimate || adamUsingBlade)
+            {
+                // 필요하면 로그도
+                // Debug.Log("[SwitchBlock] 캐스팅 중이라 전환 막음");
+                return;
+            }
+
             StartCoroutine(PlaySwitchSequence());
         }
     }
+
 
 
 

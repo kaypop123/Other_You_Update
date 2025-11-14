@@ -161,7 +161,7 @@ public class DebaraMovement : MonoBehaviour
     }
     void HandleTeleport()
     {
-        if (isTeleporting || !canTeleport || attackInputRecently || !isGround)
+        if (isTeleporting || !canTeleport || attackInputRecently || !isGround || isAttacking)
         {
             return;
         }
