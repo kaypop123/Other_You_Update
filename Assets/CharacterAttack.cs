@@ -11,12 +11,15 @@ public class CharacterAttack : MonoBehaviour
     private bool energyConsumed = false;
     public EnergyBarUI energyBarUI; //  에너지 UI 추가
     public float attackEnergyCost = 10f; // 공격 시 소비되는 에너지 양
+    AdamMovement adam;
+
 
     // 공격 상태를 다른 스크립트에서 읽기 위한 프로퍼티
     public bool IsAttacking => isAttacking;
 
     void Start()
     {
+        adam = GetComponent<AdamMovement>();    
         animator = GetComponent<Animator>();
         //  EnergyBarUI가 연결되지 않았을 경우 경고
         if (energyBarUI == null)
@@ -34,7 +37,7 @@ public class CharacterAttack : MonoBehaviour
     private void HandleComboInput()
     {
         // 공격 버튼 입력 감지
-        if (Input.GetKeyDown(KeyCode.LeftControl)) //  KeyDown으로 변경하여 연속 입력 방지
+        if (Input.GetKeyDown(KeyCode.LeftControl) && adam.isGround) //  KeyDown으로 변경하여 연속 입력 방지
         {
             TriggerAttack(); // 공격 트리거 호출
         }

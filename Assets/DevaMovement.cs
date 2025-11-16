@@ -43,6 +43,9 @@ public class DebaraMovement : MonoBehaviour
     private DownJump currentPlatformComponent;
     private Transform currentPlatformPosition;
     private Vector3 lastPlatformPos;
+
+
+    public bool IsTeleporting => isTeleporting;
     void Start()
     {
         DebaraRigidbody = GetComponent<Rigidbody2D>();
@@ -161,7 +164,7 @@ public class DebaraMovement : MonoBehaviour
     }
     void HandleTeleport()
     {
-        if (isTeleporting || !canTeleport || attackInputRecently || !isGround)
+        if (isTeleporting || !canTeleport || attackInputRecently || !isGround || isAttacking)
         {
             return;
         }
@@ -488,7 +491,13 @@ public class DebaraMovement : MonoBehaviour
 
     public void CastLaserSkill()
     {
-        
+        if (isTeleporting)
+        {
+            Debug.Log("텔레포트 중이라 X 레이저 사용 불가");
+            return;
+        }
+
+
         if (Time.time < laserCooldownEndTime)
         {
             return;
@@ -583,7 +592,6 @@ public class DebaraMovement : MonoBehaviour
         if (laserCooldownUI != null)
         {
             laserCooldownUI.cooldownTime = laserCooldown; 
-            laserCooldownUI.StartCooldown();
         }
 
         if (DebaraAnime != null && gameObject.activeInHierarchy)

@@ -76,7 +76,7 @@ public class AdamMovement : MonoBehaviour
             StopMovement();
             return;
         }
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.X) && isGround)
         {
             if (bladeSkill != null)
                 bladeSkill.StartBladeSlash();
@@ -458,7 +458,7 @@ public class AdamMovement : MonoBehaviour
 
         //  코루틴 강제 중지
         StopAllCoroutines();
-
+        AdamRigidebody.gravityScale = 2.08f;
         //  남아 있는 AfterImage 오브젝트 제거
         var afterImages = GameObject.FindGameObjectsWithTag("AfterImage");
         foreach (var img in afterImages)
