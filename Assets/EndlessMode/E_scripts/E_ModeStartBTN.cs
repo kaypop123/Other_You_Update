@@ -32,7 +32,7 @@ public class E_ModeStartBTN : MonoBehaviour
         }
 
         // 이름 저장
-        LocalScoreManager.Instance.playerName = playerName;
+        LocalScoreManager.Instance.currentPlayerName = playerName;
         Debug.Log("이름 저장 완료: " + playerName);
 
         // 캔버스 비활성화

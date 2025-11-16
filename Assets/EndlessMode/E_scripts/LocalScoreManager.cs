@@ -2,78 +2,79 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using TMPro;
 
 public class LocalScoreManager : MonoBehaviour
 {
     public static LocalScoreManager Instance;
 
-    private List<int> scores = new List<int>();        // 기존 변수명 유지
-    private List<string> names = new List<string>();   // 점수와 1:1 매칭되는 이름 리스트
-    private string[] rankingData;                      // 저장/출력용 라인 버퍼 (rank,name,score)
-    [SerializeField] public string DBFilePath;
-    [SerializeField] public string playerName;
+    private List<int> scores = new List<int>();           // 점수 리스트
+    private List<string> names = new List<string>();      // 이름 리스트
+    private List<string> ids = new List<string>();        // 고유 ID 리스트
 
-    // 환경에 따라 원하는 길이로 조절 가능 (UI 개수와 맞추면 편함)
-    private const int MAX_RANK = 200;
+    private string[] rankingData;                         // 파일 저장용 라인 버퍼
+    [SerializeField] public string DBFilePath;
+
+    private const int MAX_RANK = 10;
+
+    // 현재 플레이어 정보
+    public TextMeshProUGUI currentRankText;
+    private string currentPlayerID = "";
+    public string currentPlayerName = "";
+    private int currentPlayerScore = 0;
 
     private void Awake()
     {
-        // 싱글톤 베이직
         if (Instance == null) Instance = this;
         else { Destroy(gameObject); return; }
 
-        // 경로 세팅
         DBFilePath = Path.Combine(Application.persistentDataPath, "rankingDB.txt");
         rankingData = new string[MAX_RANK];
     }
 
     private void Start()
     {
-        // 1) 기존 파일 로드해서 scores/names 채우기
+        // 1. 기존 랭킹 로드
         LoadScoresFromFile();
 
-        // 2) 현재 플레이 결과 추가 (이름은 호출부에서 넘겨주는 게 가장 안전)
-        //    -> 예시: AddNewScore(ScoreManager.instance.score, CurrentPlayerName);
-        //    기존 시그니처를 최대한 유지하려면 오버로드 제공
-        AddNewScore(ScoreManager.instance.score, GetCurrentPlayerNameSafely());
+        // 2. 현재 플레이어 정보 (필요한 방식으로 가져올 것)
+        currentPlayerName = GetCurrentPlayerNameSafely();
+        currentPlayerScore = ScoreManager.instance.score;
+        currentPlayerID = Guid.NewGuid().ToString(); // ← 고유 ID 생성
+
+        // 3. 추가 + 정렬 + 저장 + 내 순위 찾기까지
+        AddNewScore(currentPlayerScore, currentPlayerName, currentPlayerID);
     }
 
-    // 현재 플레이어 이름을 가져오는 부분은 프로젝트 사정에 맞게 교체하세요.
     private string GetCurrentPlayerNameSafely()
     {
-        // 예시: PlayerNameManager.Instance.PlayerName가 있다면 그걸 반환
-        if (playerName != null)
+        if (currentPlayerName != null)
         {
-            return playerName;
+            return currentPlayerName;
         }
-        // 없으면 "Player" 같은 기본값
         return "Player";
     }
 
-    // === 기존 시그니처 유지용 (이름 미제공 시 기본 이름으로 처리) ===
+    // 기존 함수 유지
     public void AddNewScore(int newScore)
     {
-        AddNewScore(newScore, "Player");
+        AddNewScore(newScore, "Player", Guid.NewGuid().ToString());
     }
 
-    // === 실제 사용 권장: 점수 + 이름을 함께 추가 ===
-    public void AddNewScore(int newScore, string playerName)
+    // 실제 처리
+    public void AddNewScore(int newScore, string playerName, string id)
     {
-        // 새 정보 추가
         names.Add(playerName);
         scores.Add(newScore);
+        ids.Add(id);
 
-        // 내림차순 정렬 (이름/점수 페어를 함께 정렬)
         SortByScoreDesc();
-
-        // 파일로 저장할 랭킹 라인 재구성
-        UpdateRankUI();
-
-        // 파일로 저장
+        UpdateRankingData();
         SaveScores();
+
+        ShowCurrentPlayerRank(id, playerName, newScore);
     }
 
-    // 파일을 읽어 기존 랭킹을 scores/names로 복구
     private void LoadScoresFromFile()
     {
         if (!File.Exists(DBFilePath)) return;
@@ -85,92 +86,81 @@ public class LocalScoreManager : MonoBehaviour
 
             names.Clear();
             scores.Clear();
+            ids.Clear();
 
-            for (int i = 0; i < lines.Length; i++)
+            foreach (var line in lines)
             {
-                // 기대 포맷: rank,name,score
-                // rank는 재계산하므로 파싱 실패해도 무시 가능
-                var parts = lines[i].Split(',');
-                if (parts.Length < 3) continue;
+                // rank,name,score,id
+                var parts = line.Split(',');
+                if (parts.Length < 4) continue;
 
-                string namePart = parts[1].Trim();
-                string scorePart = parts[2].Trim();
+                string name = parts[1].Trim();
+                int score;
+                if (!int.TryParse(parts[2].Trim(), out score)) continue;
+                string id = parts[3].Trim();
 
-                int parsedScore;
-                if (!int.TryParse(scorePart, out parsedScore)) continue;
-
-                names.Add(namePart);
-                scores.Add(parsedScore);
+                names.Add(name);
+                scores.Add(score);
+                ids.Add(id);
             }
 
-            // 혹시 파일이 무질서하게 저장되어 있을 수도 있으니 정렬 한 번
             SortByScoreDesc();
         }
         catch (Exception e)
         {
-            Debug.LogWarning($"랭킹 파일 로드 중 오류: {e.Message}");
+            Debug.LogWarning("랭킹 로드 오류: " + e.Message);
         }
     }
 
-    // (이름,점수) 페어를 점수 내림차순으로 정렬
     private void SortByScoreDesc()
     {
-        // 간단하게 버블/선택정렬도 되지만, 이해 쉬운 1패스 정렬
-        // 리스트 크기가 작으니 성능 문제 없음
+        // 버블 정렬 (데이터량 적어서 충분)
         for (int i = 0; i < scores.Count - 1; i++)
         {
             for (int j = i + 1; j < scores.Count; j++)
             {
                 if (scores[j] > scores[i])
                 {
-                    // 점수 스왑
-                    int ts = scores[i];
-                    scores[i] = scores[j];
-                    scores[j] = ts;
-
-                    // 이름 스왑
-                    string tn = names[i];
-                    names[i] = names[j];
-                    names[j] = tn;
+                    (scores[i], scores[j]) = (scores[j], scores[i]);
+                    (names[i], names[j]) = (names[j], names[i]);
+                    (ids[i], ids[j]) = (ids[j], ids[i]);
                 }
             }
         }
     }
 
-    // rankingData(문자열 라인들) 구성: "rank,name,score"
-    private void UpdateRankUI()
+    private void UpdateRankingData()
     {
-        // 상위 MAX_RANK까지만 저장
         int count = Mathf.Min(MAX_RANK, scores.Count);
 
+        // 저장 포맷: rank,name,score,id
         for (int i = 0; i < count; i++)
-        {
-            int rank = i + 1;
-            string name = names[i];
-            int score = scores[i];
+            rankingData[i] = $"{i + 1},{names[i]},{scores[i]},{ids[i]}";
 
-            rankingData[i] = $"{rank},{name},{score}";
-        }
-
-        // 부족하면 비워주거나 기본값으로 채우기
+        // 부족한 부분 "-"
         for (int i = count; i < MAX_RANK; i++)
-        {
-            // 포맷 유지: rank,name,score
-            rankingData[i] = $"{i + 1},-,-";
-        }
+            rankingData[i] = $"{i + 1},-,-,-";
     }
 
     private void SaveScores()
     {
-        try
+        string allData = string.Join("\n", rankingData);
+        File.WriteAllText(DBFilePath, allData);
+        Debug.Log("랭킹 저장 완료 : " + DBFilePath);
+    }
+
+    private void ShowCurrentPlayerRank(string id, string name, int score)
+    {
+        int rankIndex = ids.IndexOf(id);
+
+        if (rankIndex != -1)
         {
-            string allData = string.Join("\n", rankingData);
-            File.WriteAllText(DBFilePath, allData);   // 없으면 생성, 있으면 덮어쓰기
-            Debug.Log($"랭킹 저장 완료 → {DBFilePath}");
-        }
-        catch (Exception e)
-        {
-            Debug.LogWarning($"랭킹 저장 실패: {e.Message}");
+            int rank = rankIndex + 1;
+
+            if (currentRankText != null)
+                currentRankText.text = $"내 순위: {rank}위\n이름: {name}\n점수: {score}";
+
+            Debug.Log($"내 순위: {rank}위 / 이름: {name} / 점수: {score}");
         }
     }
 }
