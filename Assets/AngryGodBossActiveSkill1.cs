@@ -95,11 +95,7 @@ public class AngryGodActiveSkill1 : MonoBehaviour
 
         while (isSkillActive)
         {
-            if (!aiCore.IsPlayerValid())
-            {
-                yield return AbortSkill();
-                yield break;
-            }
+
             yield return null;
         }
     }
