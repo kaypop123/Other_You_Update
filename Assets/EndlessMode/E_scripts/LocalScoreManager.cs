@@ -15,7 +15,7 @@ public class LocalScoreManager : MonoBehaviour
     private string[] rankingData;                         // 파일 저장용 라인 버퍼
     [SerializeField] public string DBFilePath;
 
-    private const int MAX_RANK = 10;
+    private const int MAX_RANK = 300;
 
     // 현재 플레이어 정보
     public TextMeshProUGUI currentRankText;
