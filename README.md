@@ -46,6 +46,5 @@
 ## 📸 전시 사진 / 영상
 ![KakaoTalk_20251023_112225068](https://github.com/user-attachments/assets/4da24aec-666e-42c1-b66d-294707129304)
 
-![240192_280486_5623](https://github.com/user-attachments/assets/d7b43009-4167-4fdb-9d15-47324591bd25)
 
 
